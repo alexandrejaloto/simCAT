@@ -13,3 +13,5 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Imports: 
     dplyr
+URL: https://github.com/alexandrejaloto/simCAT
+BugReports: https://github.com/alexandrejaloto/simCAT/issues
