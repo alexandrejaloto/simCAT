@@ -1,0 +1,29 @@
+#' @title Compute probability
+#' @name calc.prob
+#'
+#' @description Calculate probability of observing certain answer to a dicotomic item, given a theta
+#' @param bank matrix with item parameters (a, b, c)
+#' @param theta theta
+#' @param u `1` for rigth, `0` for wrong
+#'
+#' @details
+#'
+#' @return A vector with the probability of seein determined responsein each item
+#'
+#' @author Alexandre Jaloto
+#'
+#' @export
+
+calc.prob <- function(theta, bank, u = 1)
+{
+  # theta = qdpts
+  a <- bank[,1]
+  b <- bank[,2]
+  c <- bank[,3]
+  # u = 0
+  p <- c + (1 - c)*(exp(a*(theta-b)))/(1 + exp(a*(theta-b)))
+
+  p <- p^u*(1-p)^(1-u)
+
+  return(p)
+}
