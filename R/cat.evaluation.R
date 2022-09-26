@@ -15,6 +15,7 @@
 #' \itemize
 #' {
 #' \item `rmse` root mean square error between true and estimated score
+#' \item `se` standard error of measurement
 #' \item `correlation` correlation between true and estimated score
 #' \item `bias` bias between true and estimated score
 #' \item `overlap` overlap rate
@@ -23,6 +24,7 @@
 #' \item `n_exp0` number of items not administered
 #' \item `n_exp_rmax` number of items with exposure rate higher than rmax
 #' \item `length_mean` average mean of test length
+#' \item `length_sd` standard deviation of test length
 #' \item `length_median` average median of test length
 #' \item `min_length` minimum test length
 #' \item `max_length` maximum test length
@@ -45,6 +47,7 @@ cat.evaluation <- function(results, true.scores, item.name, rmax)
   # conditional <- list()
 
   rmse <- data.frame()
+  se <- data.frame()
   cor <- data.frame()
   bias <- data.frame()
   overlap <- data.frame()
@@ -53,6 +56,7 @@ cat.evaluation <- function(results, true.scores, item.name, rmax)
   n_exp0 <- data.frame()
   n_exp_rmax <- data.frame()
   length_mean <- data.frame()
+  length_sd <- data.frame()
   length_median <- data.frame()
   min_length <- data.frame()
   max_length <- data.frame()
@@ -73,7 +77,7 @@ cat.evaluation <- function(results, true.scores, item.name, rmax)
       # evaluate = data.frame(
       # eval <- data.frame(
       rmse = rmse(results[[i]]$score$theta, true.scores),
-      # se médio
+      se = mean(results[[i]]$score$SE),
       correlation = cor(results[[i]]$score$theta, true.scores),
       bias = mean(true.scores - results[[i]]$score$theta),
       overlap = sum(exposure$Freq^2)/sum(exposure$Freq),
@@ -82,7 +86,7 @@ cat.evaluation <- function(results, true.scores, item.name, rmax)
       n_exp0 = sum(exposure$Freq == 0),
       n_exp_rmax = sum(exposure$Freq > rmax),
       length_mean = mean(teste.length),
-      # sd length
+      length_sd = sd(teste.length),
       length_median = median(teste.length),
       min_length = min(teste.length),
       max_length = max(teste.length)
@@ -110,6 +114,7 @@ cat.evaluation <- function(results, true.scores, item.name, rmax)
     for(q in 1:10)
     {
       rmse[i,q] <- rmse(subset(results[[i]]$score$theta, levels == q), subset(true.scores, levels == q))
+      se[i,q] <- mean(subset(results[[i]]$score$SE, levels == q))
       cor[i,q] <- cor(subset(results[[i]]$score$theta, levels == q), subset(true.scores, levels == q))
       bias[i,q] <- mean(subset(true.scores, levels == q) - subset(results[[i]]$score$theta, levels == q))
       overlap[i,q] <- sum(conditional.exp[[q]]$Freq^2)/sum(conditional.exp[[q]]$Freq)
@@ -118,6 +123,7 @@ cat.evaluation <- function(results, true.scores, item.name, rmax)
       n_exp0[i,q] <- sum(conditional.exp[[q]]$Freq == 0)
       n_exp_rmax[i,q] <- sum(conditional.exp[[q]]$Freq > rmax)
       length_mean[i,q] <- mean(conditional.length[[q]])
+      length_sd[i,q] <- sd(conditional.length[[q]])
       length_median[i,q] <- median(conditional.length[[q]])
       min_length[i,q] <- min(conditional.length[[q]])
       max_length[i,q] <- max(conditional.length[[q]])
@@ -130,6 +136,7 @@ cat.evaluation <- function(results, true.scores, item.name, rmax)
   eval$evaluation <- colMeans(eval$evaluation)
 
   rmse <- colMeans(rmse)
+  se <- colMeans(se)
   cor <- colMeans(cor)
   bias <- colMeans(bias)
   overlap <- colMeans(overlap)
@@ -138,6 +145,7 @@ cat.evaluation <- function(results, true.scores, item.name, rmax)
   n_exp0 <- colMeans(n_exp0)
   n_exp_rmax <- colMeans(n_exp_rmax)
   length_mean <- colMeans(length_mean)
+  length_sd <- colMeans(length_sd)
   length_median <- colMeans(length_median)
   min_length <- colMeans(min_length)
   max_length <- colMeans(max_length)
@@ -145,6 +153,7 @@ cat.evaluation <- function(results, true.scores, item.name, rmax)
   eval$conditional <- data.frame(
     rbind(
       rmse,
+      se,
       cor,
       bias,
       overlap,
@@ -153,6 +162,7 @@ cat.evaluation <- function(results, true.scores, item.name, rmax)
       n_exp0,
       n_exp_rmax,
       length_mean,
+      length_sd,
       length_median,
       min_length,
       max_length
