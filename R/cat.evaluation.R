@@ -10,7 +10,8 @@
 #' @details
 #'
 #' @return a list with two elements. `evaluate` is a `data.frame`
-#' with the following variables:
+#' with the mean of the following variables (in reference
+#' to all replications):
 #' \itemize
 #' {
 #' \item `rmse` root mean square error between true and estimated score
@@ -36,22 +37,45 @@
 cat.evaluation <- function(results, true.scores, item.name, rmax)
 {
 
-  exposure <- exposure.rate(results$prev.resps, item.name)
+  thetas <- quantile(true.scores, probs = seq(.1,1,length.out = 10))
 
-  # test length
-  teste.length <- c()
-  for(person in 1:length(results$convergence))
+  levels <- cut(x = true.scores, breaks = c(-Inf,thetas), labels = 1:10)
+
+  evaluation <- list()
+  # conditional <- list()
+
+  rmse <- data.frame()
+  cor <- data.frame()
+  bias <- data.frame()
+  overlap <- data.frame()
+  min_exp <- data.frame()
+  max_exp <- data.frame()
+  n_exp0 <- data.frame()
+  n_exp_rmax <- data.frame()
+  length_mean <- data.frame()
+  length_median <- data.frame()
+  min_length <- data.frame()
+  max_length <- data.frame()
+
+  for (i in 1:length(results))
   {
-    teste.length <- c(teste.length, length(results$prev.resps[[person]]))
-  }
+    exposure <- exposure.rate(results[[i]]$prev.resps, item.name)
 
-  eval <- list(
-    evaluate = data.frame(
+    # test length
+    teste.length <- c()
+    for(person in 1:length(results[[i]]$convergence))
+    {
+      teste.length <- c(teste.length, length(results[[i]]$prev.resps[[person]]))
+    }
+
+    # eval <- list(
+    evaluation[[i]] <- data.frame(
+      # evaluate = data.frame(
       # eval <- data.frame(
-      rmse = rmse(results$score$theta, true.scores),
+      rmse = rmse(results[[i]]$score$theta, true.scores),
       # se médio
-      correlation = cor(results$score$theta, true.scores),
-      bias = mean(true.scores - results$score$theta),
+      correlation = cor(results[[i]]$score$theta, true.scores),
+      bias = mean(true.scores - results[[i]]$score$theta),
       overlap = sum(exposure$Freq^2)/sum(exposure$Freq),
       min_exp = min(exposure$Freq),
       max_exp = max(exposure$Freq),
@@ -63,65 +87,79 @@ cat.evaluation <- function(results, true.scores, item.name, rmax)
       min_length = min(teste.length),
       max_length = max(teste.length)
     )
-  )
 
-  # conditional evaluation ----
+    # conditional evaluation ----
 
-  thetas <- quantile(true.scores, probs = seq(.1,1,length.out = 10))
-
-  levels <- cut(x = true.scores, breaks = c(-Inf,thetas), labels = 1:10)
-
-  conditional.exp <- list()
-  for (i in 1:10)
-    conditional.exp[[i]] <- exposure.rate(
-      previous = subset(results$prev.resps, levels == i),
-      item.name = item.name
-    )
+    conditional.exp <- list()
+    for (q in 1:10)
+      conditional.exp[[q]] <- exposure.rate(
+        previous = subset(results[[i]]$prev.resps, levels == q),
+        item.name = item.name
+      )
 
 
-  conditional.length <- list()
-  for(i in 1:10)
-    conditional.length[[i]] <- subset(teste.length, levels == i)
+    conditional.length <- list()
+    for(q in 1:10)
+      conditional.length[[q]] <- subset(teste.length, levels == q)
 
+#
+#     conditional[[i]] <- data.frame(matrix(ncol = 11))
+#
+#     names(conditional[[i]]) <- c('var', paste0('Q', 1:10))
 
-  conditional <- data.frame(matrix(ncol = 11))
-
-  names(conditional) <- c('var', paste0('Q', 1:10))
-
-  for(i in 1:10)
-  {
-    conditional[1,(i+1)] <- rmse(subset(results$score$theta, levels == i), subset(true.scores, levels == i))
-    conditional[2,(i+1)] <- cor(subset(results$score$theta, levels == i), subset(true.scores, levels == i))
-    conditional[3,(i+1)] <- mean(subset(true.scores, levels == i) - subset(results$score$theta, levels == i))
-    conditional[4,(i+1)] <- sum(conditional.exp[[i]]$Freq^2)/sum(conditional.exp[[i]]$Freq)
-    conditional[5,(i+1)] <- min(conditional.exp[[i]]$Freq)
-    conditional[6,(i+1)] <- max(conditional.exp[[i]]$Freq)
-    conditional[7,(i+1)] <- sum(conditional.exp[[i]]$Freq == 0)
-    conditional[8,(i+1)] <- sum(conditional.exp[[i]]$Freq > rmax)
-    conditional[9,(i+1)] <- mean(conditional.length[[i]])
-    conditional[10,(i+1)] <- median(conditional.length[[i]])
-    conditional[11,(i+1)] <- min(conditional.length[[i]])
-    conditional[12,(i+1)] <- max(conditional.length[[i]])
+    for(q in 1:10)
+    {
+      rmse[i,q] <- rmse(subset(results[[i]]$score$theta, levels == q), subset(true.scores, levels == q))
+      cor[i,q] <- cor(subset(results[[i]]$score$theta, levels == q), subset(true.scores, levels == q))
+      bias[i,q] <- mean(subset(true.scores, levels == q) - subset(results[[i]]$score$theta, levels == q))
+      overlap[i,q] <- sum(conditional.exp[[q]]$Freq^2)/sum(conditional.exp[[q]]$Freq)
+      min_exp[i,q] <- min(conditional.exp[[q]]$Freq)
+      max_exp[i,q] <- max(conditional.exp[[q]]$Freq)
+      n_exp0[i,q] <- sum(conditional.exp[[q]]$Freq == 0)
+      n_exp_rmax[i,q] <- sum(conditional.exp[[q]]$Freq > rmax)
+      length_mean[i,q] <- mean(conditional.length[[q]])
+      length_median[i,q] <- median(conditional.length[[q]])
+      min_length[i,q] <- min(conditional.length[[q]])
+      max_length[i,q] <- max(conditional.length[[q]])
+    }
   }
 
-  conditional$var <- c(
-    'rmse',
-    'correlation',
-    'bias',
-    'overlap',
-    'min_exp',
-    'max_exp',
-    'n_exp0',
-    'n_exp_rmax',
-    'length_mean',
-    'length_median',
-    'min_length',
-    'max_length'
+  eval <- list()
+
+  eval$evaluation <- do.call(rbind, evaluation)
+  eval$evaluation <- colMeans(eval$evaluation)
+
+  rmse <- colMeans(rmse)
+  cor <- colMeans(cor)
+  bias <- colMeans(bias)
+  overlap <- colMeans(overlap)
+  min_exp <- colMeans(min_exp)
+  max_exp <- colMeans(max_exp)
+  n_exp0 <- colMeans(n_exp0)
+  n_exp_rmax <- colMeans(n_exp_rmax)
+  length_mean <- colMeans(length_mean)
+  length_median <- colMeans(length_median)
+  min_length <- colMeans(min_length)
+  max_length <- colMeans(max_length)
+
+  eval$conditional <- data.frame(
+    rbind(
+      rmse,
+      cor,
+      bias,
+      overlap,
+      min_exp,
+      max_exp,
+      n_exp0,
+      n_exp_rmax,
+      length_mean,
+      length_median,
+      min_length,
+      max_length
+    )
   )
 
-  names(conditional) <- c('var', thetas)
-
-  eval$conditional <- conditional
+  names(eval$conditional) <- c(thetas)
 
   return(eval)
 }

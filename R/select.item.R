@@ -7,16 +7,16 @@
 #' @param administered vector with administered items, `NULL` if it is the first
 #' item
 #' @param sel.method selection method
-#' @param stop.type type of stopping rule (`precision` or `length`).
+#' @param cat.type CAT with `variable` or `fixed` length
 #' Necessary only for progressive method.
-#' @param threshold threshold for `stop.type`
+#' @param threshold threshold for `cat.type`
 #' Necessary only for progressive method.
 #' @param SE current standard error
-#' Necessary only for progressive method, with `stop.type = "precision"`
+#' Necessary only for progressive method, with `cat.type = "variable"`
 #' @param acceleration acceleration parameter
 #' #' Necessary only for progressive method.
 #' @param max.items maximum number of items to be administered
-#' Necessary only for progressive method, with `stop.type = "precision"`
+#' Necessary only for progressive method, with `cat.type = "variable"`
 #' @param content.names vector with the contents of the test
 #' @param content.props desirable proportion of each content in test, in
 #' the same order of `content.names`
@@ -35,7 +35,7 @@
 #' @export
 
 select.item <- function(bank, theta, administered = NULL,
-                       sel.method = 'MFI', stop.type = 'precision',
+                       sel.method = 'MFI', cat.type = 'variable',
                        threshold = .30, SE, acceleration = 1,
                        max.items = 45, content.names = NULL,
                        content.props = NULL, content.items = NULL,
@@ -91,10 +91,10 @@ select.item <- function(bank, theta, administered = NULL,
 
     if(n.administered > 0)
     {
-      if(stop.type == 'length')
+      if(cat.type == 'fixed')
         W <- sum((1:n.administered)^acceleration)/sum((1:(threshold-1))^acceleration)
 
-      if(stop.type == 'precision')
+      if(cat.type == 'variable')
       {
 
         # this package uses 'se <- 1/(sqrt(1 + info))'
