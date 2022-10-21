@@ -9,7 +9,7 @@ simCAT(
   bank,
   start.theta = 0,
   sel.method = "MFI",
-  stop.type = "precision",
+  cat.type = "variable",
   acceleration = 1,
   threshold = 0.3,
   rmax = 1,
@@ -17,11 +17,13 @@ simCAT(
   content.props = NULL,
   content.items = NULL,
   met.content = "MCCAT",
-  stop = list(se = 0.3, hypo = 0.015, hyper = Inf)
+  stop = list(se = 0.3, hypo = 0.015, hyper = Inf),
+  replication = 1
 )
 }
 \arguments{
-\item{resps}{response matrix (0 and 1) with the number of columns
+\item{resps}{list with response matrixes (0 and 1). Each
+matrix has the number of columns
 corresponding to the number of items}
 
 \item{bank}{matrix with item parameters (a, b, c)}
@@ -30,13 +32,13 @@ corresponding to the number of items}
 
 \item{sel.method}{item selection method}
 
-\item{stop.type}{type of stopping rule (\code{precision} or \code{length}).
+\item{cat.type}{CAT with \code{variable} or \code{fixed} length
 Necessary only for progressive method.}
 
-\item{acceleration}{acceleration parameter
-#' Necessary only for progressive method.}
+\item{acceleration}{acceleration parameter.
+Necessary only for progressive method.}
 
-\item{threshold}{threshold for \code{stop.type}
+\item{threshold}{threshold for \code{cat.type}.
 Necessary only for progressive method.}
 
 \item{rmax}{item maximum exposure rate}
@@ -51,7 +53,7 @@ the same order of \code{content.names}}
 \item{met.content}{content balancing method: \code{MCCAT} (default) or \code{CCAT}}
 
 \item{stop}{list with stopping rule and thresholds
-#' \itemize{
+\itemize{
 \item \code{se} minimum standard error
 \item \code{delta.theta} minimum absolute difference between current and previous theta
 \item \code{hypo} minimum standard error reduction
@@ -61,6 +63,8 @@ the same order of \code{content.names}}
 \item \code{min.items} maximum number of items
 \item \code{fixed} fixed number of items
 }}
+
+\item{replications}{number of replications of the simulation}
 }
 \value{
 

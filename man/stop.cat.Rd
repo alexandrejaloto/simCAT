@@ -35,9 +35,11 @@ stop.cat(
 }
 \value{
 A list with two elements:
-\code{stop} \code{TRUE} if any stopping rule has been achieved
-\code{convergence} logical. \code{FALSE} if the CAT stopped because it
+\itemize{
+\item \code{stop} \code{TRUE} if any stopping rule has been achieved
+\item \code{convergence} logical. \code{FALSE} if the CAT stopped because it
 achieved the maximum number of items. \code{TRUE} for any other case.
+}
 }
 \description{
 Check if any stopping rule has been achieved

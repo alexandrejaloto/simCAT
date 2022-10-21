@@ -12,7 +12,7 @@ gen.resp(theta, bank)
 \item{bank}{matrix with item parameters (a, b, c)}
 }
 \value{
-A vector with the probability of seein determined responsein each item
+A vector with the probability of seeing determined response in each item
 }
 \description{
 Generate response pattern based on probability of answering correct a dicotomic item, given a theta and an item bank

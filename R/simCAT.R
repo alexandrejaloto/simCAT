@@ -11,9 +11,9 @@
 #' @param sel.method item selection method
 #' @param cat.type CAT with `variable` or `fixed` length
 #' Necessary only for progressive method.
-#' @param acceleration acceleration parameter
-#' #' Necessary only for progressive method.
-#' @param threshold threshold for `cat.type`
+#' @param acceleration acceleration parameter.
+#' Necessary only for progressive method.
+#' @param threshold threshold for `cat.type`.
 #' Necessary only for progressive method.
 #' @param rmax item maximum exposure rate
 #' @param content.names vector with the contents of the test
@@ -22,17 +22,17 @@
 #' @param content.items vector indicating the content of each item
 #' @param met.content content balancing method: `MCCAT` (default) or `CCAT`
 #' @param stop list with stopping rule and thresholds
-#' #' \itemize{
+#' \itemize{
 #' \item `se` minimum standard error
 #' \item `delta.theta` minimum absolute difference between current and previous theta
-#'  \item `hypo` minimum standard error reduction
-#'  \item `hyper` minimum standard error reduction after achieving `se`
-#'  \item `info` maximum information of an available item
-#'  \item `max.items` maximum number of items
-#'  \item `min.items` maximum number of items
-#'  \item `fixed` fixed number of items
-#'  }
-#'  @param replications number of replications of the simulation
+#' \item `hypo` minimum standard error reduction
+#' \item `hyper` minimum standard error reduction after achieving `se`
+#' \item `info` maximum information of an available item
+#' \item `max.items` maximum number of items
+#' \item `min.items` maximum number of items
+#' \item `fixed` fixed number of items
+#' }
+#' @param replications number of replications of the simulation
 #'
 #' @details
 #'

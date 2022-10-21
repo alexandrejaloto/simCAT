@@ -7,15 +7,15 @@
 #' @param administered vector with administered items, `NULL` if it is the first
 #' item
 #' @param sel.method selection method
-#' @param cat.type CAT with `variable` or `fixed` length
+#' @param cat.type CAT with `variable` or `fixed` length.
 #' Necessary only for progressive method.
-#' @param threshold threshold for `cat.type`
+#' @param threshold threshold for `cat.type`.
 #' Necessary only for progressive method.
-#' @param SE current standard error
+#' @param SE current standard error.
 #' Necessary only for progressive method, with `cat.type = "variable"`
-#' @param acceleration acceleration parameter
-#' #' Necessary only for progressive method.
-#' @param max.items maximum number of items to be administered
+#' @param acceleration acceleration parameter.
+#' Necessary only for progressive method.
+#' @param max.items maximum number of items to be administered.
 #' Necessary only for progressive method, with `cat.type = "variable"`
 #' @param content.names vector with the contents of the test
 #' @param content.props desirable proportion of each content in test, in
@@ -26,10 +26,10 @@
 #' @details
 #'
 #' @return A list with two elements
-#'
-#' `item` the number o the selected item in item bank
-#' `name` name of the selected item (row name)
-#'
+#' \itemize{
+#' \item `item` the number o the selected item in item bank
+#' \item `name` name of the selected item (row name)
+#' }
 #' @author Alexandre Jaloto
 #'
 #' @export

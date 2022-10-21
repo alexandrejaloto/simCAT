@@ -12,8 +12,7 @@
 #' @return a list with two elements. `evaluate` is a `data.frame`
 #' with the mean of the following variables (in reference
 #' to all replications):
-#' \itemize
-#' {
+#' \itemize{
 #' \item `rmse` root mean square error between true and estimated score
 #' \item `se` standard error of measurement
 #' \item `correlation` correlation between true and estimated score
@@ -39,13 +38,14 @@
 cat.evaluation <- function(results, true.scores, item.name, rmax)
 {
 
+  # true scores deciles
   thetas <- quantile(true.scores, probs = seq(.1,1,length.out = 10))
-
   levels <- cut(x = true.scores, breaks = c(-Inf,thetas), labels = 1:10)
 
+  # object for average evaluation
   evaluation <- list()
-  # conditional <- list()
 
+  # dependent variables
   rmse <- data.frame()
   se <- data.frame()
   cor <- data.frame()
@@ -63,6 +63,7 @@ cat.evaluation <- function(results, true.scores, item.name, rmax)
 
   for (i in 1:length(results))
   {
+    # exposure rate
     exposure <- exposure.rate(results[[i]]$prev.resps, item.name)
 
     # test length
@@ -72,15 +73,12 @@ cat.evaluation <- function(results, true.scores, item.name, rmax)
       teste.length <- c(teste.length, length(results[[i]]$prev.resps[[person]]))
     }
 
-    # eval <- list(
     evaluation[[i]] <- data.frame(
-      # evaluate = data.frame(
-      # eval <- data.frame(
       rmse = rmse(results[[i]]$score$theta, true.scores),
       se = mean(results[[i]]$score$SE),
       correlation = cor(results[[i]]$score$theta, true.scores),
       bias = mean(true.scores - results[[i]]$score$theta),
-      overlap = sum(exposure$Freq^2)/sum(exposure$Freq),
+      overlap = (mean((exposure$Freq - mean(exposure$Freq))^2) + mean(exposure$Freq)^2)/mean(exposure$Freq),
       min_exp = min(exposure$Freq),
       max_exp = max(exposure$Freq),
       n_exp0 = sum(exposure$Freq == 0),
@@ -101,15 +99,9 @@ cat.evaluation <- function(results, true.scores, item.name, rmax)
         item.name = item.name
       )
 
-
     conditional.length <- list()
     for(q in 1:10)
       conditional.length[[q]] <- subset(teste.length, levels == q)
-
-#
-#     conditional[[i]] <- data.frame(matrix(ncol = 11))
-#
-#     names(conditional[[i]]) <- c('var', paste0('Q', 1:10))
 
     for(q in 1:10)
     {
@@ -117,7 +109,7 @@ cat.evaluation <- function(results, true.scores, item.name, rmax)
       se[i,q] <- mean(subset(results[[i]]$score$SE, levels == q))
       cor[i,q] <- cor(subset(results[[i]]$score$theta, levels == q), subset(true.scores, levels == q))
       bias[i,q] <- mean(subset(true.scores, levels == q) - subset(results[[i]]$score$theta, levels == q))
-      overlap[i,q] <- sum(conditional.exp[[q]]$Freq^2)/sum(conditional.exp[[q]]$Freq)
+      overlap[i,q] <- (mean((conditional.exp[[q]]$Freq - mean(conditional.exp[[q]]$Freq))^2) + mean(conditional.exp[[q]]$Freq)^2)/mean(conditional.exp[[q]]$Freq)
       min_exp[i,q] <- min(conditional.exp[[q]]$Freq)
       max_exp[i,q] <- max(conditional.exp[[q]]$Freq)
       n_exp0[i,q] <- sum(conditional.exp[[q]]$Freq == 0)
@@ -130,11 +122,14 @@ cat.evaluation <- function(results, true.scores, item.name, rmax)
     }
   }
 
+  # final object
   eval <- list()
 
+  # final general evaluation
   eval$evaluation <- do.call(rbind, evaluation)
   eval$evaluation <- colMeans(eval$evaluation)
 
+  # final conditional evaluation
   rmse <- colMeans(rmse)
   se <- colMeans(se)
   cor <- colMeans(cor)

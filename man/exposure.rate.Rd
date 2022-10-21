@@ -12,9 +12,8 @@ exposure.rate(previous, item.name)
 \item{item.name}{vector with the name of all items in the bank}
 }
 \value{
-data.frame with
-\itemize
-{
+\code{data.frame} with
+\itemize{
 \item \code{items} name of the items
 \item \code{Freq} exposure rate
 }

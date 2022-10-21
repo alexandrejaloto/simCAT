@@ -9,7 +9,7 @@ select.item(
   theta,
   administered = NULL,
   sel.method = "MFI",
-  stop.type = "precision",
+  cat.type = "variable",
   threshold = 0.3,
   SE,
   acceleration = 1,
@@ -30,20 +30,20 @@ item}
 
 \item{sel.method}{selection method}
 
-\item{stop.type}{type of stopping rule (\code{precision} or \code{length}).
+\item{cat.type}{CAT with \code{variable} or \code{fixed} length.
 Necessary only for progressive method.}
 
-\item{threshold}{threshold for \code{stop.type}
+\item{threshold}{threshold for \code{cat.type}.
 Necessary only for progressive method.}
 
-\item{SE}{current standard error
-Necessary only for progressive method, with \code{stop.type = "precision"}}
+\item{SE}{current standard error.
+Necessary only for progressive method, with \code{cat.type = "variable"}}
 
-\item{acceleration}{acceleration parameter
-#' Necessary only for progressive method.}
+\item{acceleration}{acceleration parameter.
+Necessary only for progressive method.}
 
-\item{max.items}{maximum number of items to be administered
-Necessary only for progressive method, with \code{stop.type = "precision"}}
+\item{max.items}{maximum number of items to be administered.
+Necessary only for progressive method, with \code{cat.type = "variable"}}
 
 \item{content.names}{vector with the contents of the test}
 
@@ -56,9 +56,10 @@ the same order of \code{content.names}}
 }
 \value{
 A list with two elements
-
-\code{item} the number o the selected item in item bank
-\code{name} name of the selected item (row name)
+\itemize{
+\item \code{item} the number o the selected item in item bank
+\item \code{name} name of the selected item (row name)
+}
 }
 \description{
 Select next item to be administered

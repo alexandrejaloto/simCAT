@@ -7,9 +7,8 @@
 #'
 #' @details
 #'
-#' @return data.frame with
-#' \itemize
-#' {
+#' @return `data.frame` with
+#' \itemize{
 #' \item `items` name of the items
 #' \item `Freq` exposure rate
 #' }

@@ -7,7 +7,7 @@
 #'
 #' @details
 #'
-#' @return A vector with the probability of seein determined responsein each item
+#' @return A vector with the probability of seeing determined response in each item
 #'
 #' @author Alexandre Jaloto
 #'
@@ -15,11 +15,8 @@
 
 gen.resp <- function(theta, bank)
 {
-  # theta <- -1:2
-
   p <- lapply(theta, calc.prob, bank = bank)
-  #   p <-  calc.prob(theta, bank)
-  # class(p)
+
   p <- do.call(rbind, p)
 
   random <- runif(length(theta))

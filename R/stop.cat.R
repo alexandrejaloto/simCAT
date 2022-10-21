@@ -1,19 +1,18 @@
 #' @title Check if the CAT ended
 #' @name stop.cat
-#'
 #' @description Check if any stopping rule has been achieved
 #'
 #' @param rule list with stopping rules
 #' \itemize{
 #' \item `se` minimum standard error
 #' \item `delta.theta` minimum absolute difference between current and previous theta
-#'  \item `hypo` minimum standard error reduction
-#'  \item `hyper` minimum standard error reduction after achieving `se`
-#'  \item `info` maximum information of an available item
-#'  \item `max.items` maximum number of items
-#'  \item `min.items` maximum number of items
-#'  \item `fixed` fixed number of items
-#'  }
+#' \item `hypo` minimum standard error reduction
+#' \item `hyper` minimum standard error reduction after achieving `se`
+#' \item `info` maximum information of an available item
+#' \item `max.items` maximum number of items
+#' \item `min.items` maximum number of items
+#' \item `fixed` fixed number of items
+#' }
 #' @param current list with current values
 #' \itemize{
 #' \item `se` current standard error
@@ -21,14 +20,15 @@
 #' \item `info` maximum information of an available item for current theta
 #' \item `applied` quantitative of applied items
 #' \item `delta.se` standard error reduction
-#'}
+#' }
 #' @details
 #'
 #' @return A list with two elements:
-#' `stop` `TRUE` if any stopping rule has been achieved
-#' `convergence` logical. `FALSE` if the CAT stopped because it
+#' \itemize{
+#' \item `stop` `TRUE` if any stopping rule has been achieved
+#' \item `convergence` logical. `FALSE` if the CAT stopped because it
 #' achieved the maximum number of items. `TRUE` for any other case.
-#'
+#' }
 #' @author Alexandre Jaloto
 #'
 #' @export

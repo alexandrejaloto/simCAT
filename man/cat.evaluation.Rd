@@ -17,10 +17,11 @@ cat.evaluation(results, true.scores, item.name, rmax)
 }
 \value{
 a list with two elements. \code{evaluate} is a \code{data.frame}
-with the following variables:
-\itemize
-{
+with the mean of the following variables (in reference
+to all replications):
+\itemize{
 \item \code{rmse} root mean square error between true and estimated score
+\item \code{se} standard error of measurement
 \item \code{correlation} correlation between true and estimated score
 \item \code{bias} bias between true and estimated score
 \item \code{overlap} overlap rate
@@ -29,6 +30,7 @@ with the following variables:
 \item \code{n_exp0} number of items not administered
 \item \code{n_exp_rmax} number of items with exposure rate higher than rmax
 \item \code{length_mean} average mean of test length
+\item \code{length_sd} standard deviation of test length
 \item \code{length_median} average median of test length
 \item \code{min_length} minimum test length
 \item \code{max_length} maximum test length
