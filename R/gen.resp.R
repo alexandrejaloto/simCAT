@@ -19,7 +19,7 @@ gen.resp <- function(theta, bank)
 
   p <- do.call(rbind, p)
 
-  random <- runif(length(theta))
+  random <- runif(nrow(p)*ncol(p))
 
   resp <- apply(p > random, 2, as.numeric)
 
