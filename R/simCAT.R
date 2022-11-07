@@ -192,7 +192,7 @@ simCAT <- function(resps, bank, start.theta = 0, sel.method = 'MFI',
 
   names (score) <- c('theta', 'SE')
 
-  results[[i]] <- list(
+  results <- list(
     score = score,
     convergence = convergence,
     theta.history = theta.history,
