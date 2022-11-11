@@ -73,6 +73,8 @@ select.item <- function(bank, theta, administered = NULL,
     # select item
     select <- which(info == max(info[items_available]))
 
+    # if there is a tie, pick one randomly
+    select <- select[sample(length(select), 1)]
   }
 
   # random ----
