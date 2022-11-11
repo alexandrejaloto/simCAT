@@ -124,7 +124,7 @@ simCAT <- function(resps, bank, start.theta = 0, sel.method = 'MFI',
         max.items = max.items,
         content.names = content.names,
         content.props = content.props,
-        content.items = content.items,
+        content.items = content.items[number_items_available],
         met.content = met.content
       )
 
