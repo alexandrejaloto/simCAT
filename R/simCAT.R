@@ -70,7 +70,7 @@ simCAT <- function(resps, bank, start.theta = 0, sel.method = 'MFI',
   # theta and se
   score <- data.frame(matrix(ncol = 2))
   # did the CAT converge?  (for whole application)
-  convergence <- list()
+  convergence <- c()
   # theta history (for whole application)
   theta.history <- list()
   # se history (for whole application)
@@ -186,7 +186,7 @@ simCAT <- function(resps, bank, start.theta = 0, sel.method = 'MFI',
 
     # store results
     score[person,] <- c(theta.cat, SE)
-    convergence[[person]] <- end$convergence
+    convergence[person] <- end$convergence
     theta.history[[person]] <- theta.hist
     se.history[[person]] <- se.hist
     prev.resps[[person]] <- rownames(items_available)[administered]
