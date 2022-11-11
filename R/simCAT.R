@@ -54,6 +54,12 @@ simCAT <- function(resps, bank, start.theta = 0, sel.method = 'MFI',
   bank <- data.frame(bank)
   rownames(bank) <- paste0('I', 1:nrow(bank))
 
+  if(cat.type == 'variable' & is.null(stop$max.items))
+  {
+    warning('The maximum number of items was set to be nrow(bank)')
+    max.items <- nrow(bank)
+  }
+
   if(!is.null(stop$max.items))
     max.items <- stop$max.items
 
@@ -63,7 +69,7 @@ simCAT <- function(resps, bank, start.theta = 0, sel.method = 'MFI',
 
   # theta and se
   score <- data.frame(matrix(ncol = 2))
-  # did the CAT congerge?  (for whole application)
+  # did the CAT converge?  (for whole application)
   convergence <- list()
   # theta history (for whole application)
   theta.history <- list()
