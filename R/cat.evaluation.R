@@ -35,6 +35,8 @@
 #'
 #' @author Alexandre Jaloto
 #'
+#' @export
+#'
 cat.evaluation <- function(results, true.scores, item.name, rmax)
 {
 
