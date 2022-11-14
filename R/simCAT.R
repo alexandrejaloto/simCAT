@@ -95,7 +95,7 @@ simCAT <- function(resps, bank, start.theta = 0, sel.method = 'MFI',
     if (person == 1)
     {
       number_items_available <- 1:nrow(bank)
-      items_available <- bank
+      bank_available <- bank
 
     } else {
 
@@ -103,7 +103,7 @@ simCAT <- function(resps, bank, start.theta = 0, sel.method = 'MFI',
 
       # select available items
       number_items_available <- which (exposure$Freq <= rmax)
-      items_available <- bank[number_items_available,]
+      bank_available <- bank[number_items_available,]
     }
 
     # simulation ----
@@ -119,7 +119,7 @@ simCAT <- function(resps, bank, start.theta = 0, sel.method = 'MFI',
       # select item ----
 
       item_select <- select.item(
-        bank = items_available,
+        bank = bank_available,
         theta = theta.cat,
         administered = administered,
         sel.method = sel.method,
@@ -143,7 +143,7 @@ simCAT <- function(resps, bank, start.theta = 0, sel.method = 'MFI',
       # pattern: select from resps only the available items, and from them, the administered ones (and the person)
       theta <- eap(
         pattern = resps[,number_items_available][person,administered],
-        bank = items_available[administered,]
+        bank = bank_available[administered,]
       )
 
       # update theta
@@ -165,7 +165,7 @@ simCAT <- function(resps, bank, start.theta = 0, sel.method = 'MFI',
       se.hist <- c(se.hist, SE)
 
       # compute information for theta.cat
-      info <- calc.info(bank = items_available, theta = theta.cat)
+      info <- calc.info(bank = bank_available, theta = theta.cat)
       info[administered] <- 0
       info <- max(info)
 
@@ -189,7 +189,7 @@ simCAT <- function(resps, bank, start.theta = 0, sel.method = 'MFI',
     convergence[person] <- end$convergence
     theta.history[[person]] <- theta.hist
     se.history[[person]] <- se.hist
-    prev.resps[[person]] <- rownames(items_available)[administered]
+    prev.resps[[person]] <- rownames(bank_available)[administered]
 
     # progress bar
     setTxtProgressBar(bar, person)
