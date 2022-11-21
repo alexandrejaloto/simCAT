@@ -2,6 +2,7 @@
 
 export(calc.info)
 export(calc.prob)
+export(cat.evaluation)
 export(content.balancing)
 export(eap)
 export(gen.resp)

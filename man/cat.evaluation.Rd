@@ -16,7 +16,9 @@ cat.evaluation(results, true.scores, item.name, rmax)
 \item{rmax}{item maximum exposure rate}
 }
 \value{
-a list with two elements. \code{evaluate} is a \code{data.frame}
+a list with two elements.
+
+\code{evaluate} is a \code{data.frame}
 with the mean of the following variables (in reference
 to all replications):
 \itemize{

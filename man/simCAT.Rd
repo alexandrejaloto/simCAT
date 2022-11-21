@@ -17,14 +17,13 @@ simCAT(
   content.props = NULL,
   content.items = NULL,
   met.content = "MCCAT",
-  stop = list(se = 0.3, hypo = 0.015, hyper = Inf),
-  replication = 1
+  stop = list(se = 0.3, hypo = 0.015, hyper = Inf)
 )
 }
 \arguments{
-\item{resps}{list with response matrixes (0 and 1). Each
-matrix has the number of columns
-corresponding to the number of items}
+\item{resps}{a matrix with responses (0 and 1).
+The number of columns
+corresponds to the number of items}
 
 \item{bank}{matrix with item parameters (a, b, c)}
 
@@ -63,8 +62,6 @@ the same order of \code{content.names}}
 \item \code{min.items} maximum number of items
 \item \code{fixed} fixed number of items
 }}
-
-\item{replications}{number of replications of the simulation}
 }
 \value{
 

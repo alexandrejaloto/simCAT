@@ -54,6 +54,12 @@ simCAT <- function(resps, bank, start.theta = 0, sel.method = 'MFI',
   bank <- data.frame(bank)
   rownames(bank) <- paste0('I', 1:nrow(bank))
 
+  mod <- bank
+  names(mod) <- c('a1', 'd', 'g')
+  mod$d <- -mod$a1*mod$d
+
+  mod <- mirtCAT::generate.mirt_object(mod, '3PL')
+
   if(cat.type == 'variable' & is.null(stop$max.items))
   {
     warning('The maximum number of items was set to be nrow(bank)')
@@ -108,6 +114,7 @@ simCAT <- function(resps, bank, start.theta = 0, sel.method = 'MFI',
 
     # simulation ----
 
+    pattern <- rep(NA, nrow(bank))
     end <- list(stop = FALSE)
     administered <- NULL
     theta.cat <- theta.hist <- start.theta
@@ -141,13 +148,26 @@ simCAT <- function(resps, bank, start.theta = 0, sel.method = 'MFI',
 
       # estimate theta
       # pattern: select from resps only the available items, and from them, the administered ones (and the person)
-      theta <- eap(
-        pattern = resps[,number_items_available][person,administered],
-        bank = bank_available[administered,]
+      # theta <- eap(
+      #   pattern = resps[,number_items_available][person,administered],
+      #   bank = bank_available[administered,]
+      # )
+
+      # pattern: select from resps only the available items, and from them, the administered ones (and the person)
+      pattern[number_items_available][administered] <- resps[,number_items_available][person,administered]
+
+      # estimate theta
+      theta <- data.frame(
+        mirt::fscores(
+          object = mod,
+          response.pattern = pattern,
+          quadpts = 40,
+          theta_lim = c(-4, 4)
+        )
       )
 
       # update theta
-      theta.cat <- theta$theta
+      theta.cat <- theta$F1
 
       # delta theta
       delta.theta <- abs(theta.cat - theta.hist[length(theta.hist)])

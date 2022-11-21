@@ -9,7 +9,9 @@
 #'
 #' @details
 #'
-#' @return a list with two elements. `evaluate` is a `data.frame`
+#' @return a list with two elements.
+#'
+#' `evaluate` is a `data.frame`
 #' with the mean of the following variables (in reference
 #' to all replications):
 #' \itemize{
