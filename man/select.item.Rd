@@ -13,7 +13,7 @@ select.item(
   threshold = 0.3,
   SE,
   acceleration = 1,
-  met.AP = "mcclarty",
+  met.weight = "mcclarty",
   max.items = 45,
   content.names = NULL,
   content.props = NULL,
@@ -43,6 +43,9 @@ Necessary only for progressive method, with \code{cat.type = "variable"}}
 \item{acceleration}{acceleration parameter.
 Necessary only for progressive method.}
 
+\item{met.weight}{the procedure to calculate the \code{progressive}'s weight in variable-length
+CAT. It can be \code{"magis"} or \code{"mcclarty"} (default). See datails.}
+
 \item{max.items}{maximum number of items to be administered.
 Necessary only for progressive method, with \code{cat.type = "variable"}}
 
@@ -54,9 +57,6 @@ the same order of \code{content.names}}
 \item{content.items}{vector indicating the content of each item}
 
 \item{met.content}{content balancing method: \code{MCCAT} (default) or \code{CCAT}}
-
-\item{met.weight}{the procedure to calculate the \code{progressive}'s weight in variable-length
-CAT. It can be \code{"magis"} or \code{"mcclarty"} (default). See datails.}
 }
 \value{
 A list with two elements
