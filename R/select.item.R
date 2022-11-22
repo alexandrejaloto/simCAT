@@ -94,7 +94,7 @@ select.item <- function(bank, theta, administered = NULL,
     if(n.administered > 0)
     {
       if(cat.type == 'fixed')
-        W <- sum((1:n.administered)^acceleration)/sum((1:(threshold-1))^acceleration)
+        W <- (sum(((2:n.administered)-1)^acceleration))/(sum(((2:threshold)-1)^acceleration))
 
       if(cat.type == 'variable')
       {
@@ -120,10 +120,10 @@ select.item <- function(bank, theta, administered = NULL,
     select <- (1 - W)*r + W*info
 
     # exclude unavailable items
-    select[OUT] <- 0
+    select[OUT] <- NA
 
     # select the highest 'select'
-    select <- which(select == max(select))
+    select <- which(select == max(select, na.rm = TRUE))
 
     # if there is a tie, pick one randomly
     select <- select[sample(length(select), 1)]
