@@ -71,7 +71,7 @@
 select.item <- function(bank, theta, administered = NULL,
                         sel.method = 'MFI', cat.type = 'variable',
                         threshold = .30, SE,
-                        acceleration = 1, met.AP = 'mcclarty',
+                        acceleration = 1, met.weight = 'mcclarty',
                         max.items = 45, content.names = NULL,
                         content.props = NULL, content.items = NULL,
                         met.content = 'MCCAT')
@@ -145,10 +145,10 @@ select.item <- function(bank, theta, administered = NULL,
         # info.theta <- 1/SE^2
         # info.threshold <- 1/threshold^2
 
-        if (met.AP == 'mcclarty')
+        if (met.weight == 'mcclarty')
           W <- (threshold/SE)^acceleration
 
-        if (met.AP == 'magis')
+        if (met.weight == 'magis')
         W <- max(info.theta/info.threshold, n.administered/(max.items-1))^acceleration
 
         }
