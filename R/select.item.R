@@ -60,7 +60,7 @@
 #' McClarty, K. L., Sperling, R. A., & Dodd, B. G. (2006). \emph{A variant of the progressive-restricted item exposure control procedure in computerized adaptive testing}. Annual Meeting of the American Educational Research Association, San Francisco
 #'
 #' @return A list with two elements
-#' \itemize{s
+#' \itemize{
 #' \item `item` the number o the selected item in item bank
 #' \item `name` name of the selected item (row name)
 #' }
@@ -157,7 +157,7 @@ select.item <- function(bank, theta, administered = NULL,
     info <- calc.info(bank, theta)
 
     # random values
-    r <- runif(nrow(bank), 0, max(info))
+    r <- runif(nrow(bank), 0, max(info[items_available]))
 
     # progressive
     select <- (1 - W)*r + W*info
