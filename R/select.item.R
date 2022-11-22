@@ -15,6 +15,8 @@
 #' Necessary only for progressive method, with `cat.type = "variable"`
 #' @param acceleration acceleration parameter.
 #' Necessary only for progressive method.
+#' @param met.weight the procedure to calculate the `progressive`'s weight in variable-length
+#' CAT. It can be `"magis"` (default) or `"mcclarty"`. See datails.
 #' @param max.items maximum number of items to be administered.
 #' Necessary only for progressive method, with `cat.type = "variable"`
 #' @param content.names vector with the contents of the test
@@ -24,9 +26,39 @@
 #' @param met.content content balancing method: `MCCAT` (default) or `CCAT`
 #'
 #' @details
+#' In the progressive, the administered item is the one that has the highest weight. The weight of the
+#' item `i` is calculated as following:
+#' \deqn{W_i = (1-s)R_i+sI_i}
+#' where `R` is a random number between zero and the maximum information of an item in the bank
+#' for the current theta, `I` is the item information and `s` is the importance of the component. As
+#' the application progresses, the random component loses importance. There are some ways to calculate `s`.
+#' For fixed-length CAT, Barrada et al. (2008) uses
+#' \deqn{s = 0}
+#'
+#' if it is the first item of the test. For the other administering items,
+#'
+#' \deqn{s = \frac{\sum_{f=1}^{q}{(f-1)^k}}{\sum_{f=1}^{Q}{(f-1)^k}}}
+#'
+#' where `q` is the number of the item position in the test, `Q` is the
+#' test length and `k` is the acceleration parameter. `simCAT` uses these two
+#' equations for fixed-lengh CAT. For variable-length, `simCAT` uses `"magis"`
+#' (Magis & Barrada, 2017) as default
+#' \deqn{s = max [ \frac{I(\theta)}{I_{stop}},\frac{q}{M-1}]^k}
+#' where `I(\theta)` is the item information for the current theta, `I_{stop}` is
+#' the information corresponding to the stopping error value, and `M` is the maximum
+#' length of the test. `simCAT` also uses `"mcclarty"` (adapted from McClarty et al., 2006):
+#' \deqn{s = \frac{SE_{stop}}{SE}^k}
+#' where `SE` is the standard error for the current theta, `SE_{stop}` is
+#' the stopping error value.
+#' @references
+#' Barrada, J. R., Olea, J., Ponsoda, V., & Abad, F. J. (2008). \emph{Incorporating randomness in the Fisher information for improving item-exposure control in CATs}. British Journal of Mathematical and Statistical Psychology, 61(2), 493–513. 10.1348/000711007X230937
+#'
+#' Magis, D., & Barrada, J. R. (2017). \emph{Computerized adaptive testing with R: recent updates of the package catR}. Journal of Statistical Software, 76(Code Snippet 1). 10.18637/jss.v076.c01
+#'
+#' McClarty, K. L., Sperling, R. A., & Dodd, B. G. (2006). \emph{A variant of the progressive-restricted item exposure control procedure in computerized adaptive testing}. Annual Meeting of the American Educational Research Association, San Francisco
 #'
 #' @return A list with two elements
-#' \itemize{
+#' \itemize{s
 #' \item `item` the number o the selected item in item bank
 #' \item `name` name of the selected item (row name)
 #' }
@@ -35,11 +67,12 @@
 #' @export
 
 select.item <- function(bank, theta, administered = NULL,
-                       sel.method = 'MFI', cat.type = 'variable',
-                       threshold = .30, SE, acceleration = 1,
-                       max.items = 45, content.names = NULL,
-                       content.props = NULL, content.items = NULL,
-                       met.content = 'MCCAT')
+                        sel.method = 'MFI', cat.type = 'variable',
+                        threshold = .30, SE,
+                        acceleration = 1, met.AP = 'barrada',
+                        max.items = 45, content.names = NULL,
+                        content.props = NULL, content.items = NULL,
+                        met.content = 'MCCAT')
 {
 
   # balanceamento de conteúdo ----
@@ -94,11 +127,14 @@ select.item <- function(bank, theta, administered = NULL,
     if(n.administered > 0)
     {
       if(cat.type == 'fixed')
-        W <- (sum(((2:n.administered)-1)^acceleration))/(sum(((2:threshold)-1)^acceleration))
+        W <- (sum(((2:(n.administered+1))-1)^acceleration))/(sum(((2:threshold)-1)^acceleration))
 
       if(cat.type == 'variable')
       {
-
+        SE <- .8
+        threshold <- .3
+        n.administered <- 2
+        max.items <- 30
         # this package uses 'se <- 1/(sqrt(1 + info))'
         info.theta <- 1/SE^2 - 1
         info.threshold <- 1/threshold^2 - 1
@@ -107,8 +143,13 @@ select.item <- function(bank, theta, administered = NULL,
         # info.theta <- 1/SE^2
         # info.threshold <- 1/threshold^2
 
+        if (met.AP == 'barrada')
         W <- max(info.theta/info.threshold, n.administered/(max.items-1))^acceleration
-      }
+
+        if (met.AP == 'jaloto')
+          W <- (threshold/SE)^acceleration
+
+        }
     }
 
     info <- calc.info(bank, theta)
