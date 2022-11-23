@@ -11,6 +11,7 @@ simCAT(
   sel.method = "MFI",
   cat.type = "variable",
   acceleration = 1,
+  met.weight = "mcclarty",
   threshold = 0.3,
   rmax = 1,
   content.names = NULL,
@@ -36,6 +37,9 @@ Necessary only for progressive method.}
 
 \item{acceleration}{acceleration parameter.
 Necessary only for progressive method.}
+
+\item{met.weight}{the procedure to calculate the \code{progressive}'s weight in variable-length
+CAT. It can be \code{"magis"} or \code{"mcclarty"} (default). See datails.}
 
 \item{threshold}{threshold for \code{cat.type}.
 Necessary only for progressive method.}
@@ -70,7 +74,39 @@ the same order of \code{content.names}}
 A CAT simulation with dicotomic items.
 }
 \details{
+In the progressive, the administered item is the one that has the highest weight. The weight of the
+item \code{i} is calculated as following:
+\deqn{W_i = (1-s)R_i+sI_i}
+where \code{R} is a random number between zero and the maximum information of an item in the bank
+for the current theta, \code{I} is the item information and \code{s} is the importance of the component. As
+the application progresses, the random component loses importance. There are some ways to calculate \code{s}.
+For fixed-length CAT, Barrada et al. (2008) uses
+\deqn{s = 0}
 
+if it is the first item of the test. For the other administering items,
+
+\deqn{s = \frac{\sum_{f=1}^{q}{(f-1)^k}}{\sum_{f=1}^{Q}{(f-1)^k}}}
+
+where \code{q} is the number of the item position in the test, \code{Q} is the
+test length and \code{k} is the acceleration parameter. \code{simCAT} uses these two
+equations for fixed-lengh CAT. For variable-length, \code{simCAT} can use \code{"magis"}
+(Magis & Barrada, 2017):
+\deqn{s = max [ \frac{I(\theta)}{I_{stop}},\frac{q}{M-1}]^k}
+where \verb{I(\\theta)} is the item information for the current theta, \verb{I_\{stop\}} is
+the information corresponding to the stopping error value, and \code{M} is the maximum
+length of the test. \code{simCAT} uses as default \code{"mcclarty"} (adapted from McClarty et al., 2006):
+\deqn{s = \frac{SE_{stop}}{SE}^k}
+where \code{SE} is the standard error for the current theta, \verb{SE_\{stop\}} is
+the stopping error value.
+}
+\references{
+Barrada, J. R., Olea, J., Ponsoda, V., & Abad, F. J. (2008). \emph{Incorporating randomness in the Fisher information for improving item-exposure control in CATs}. British Journal of Mathematical and Statistical Psychology, 61(2), 493–513. 10.1348/000711007X230937
+
+Leroux, A. J., & Dodd, B. G. (2016). \emph{A comparison of exposure control procedures in CATs using the GPC model}. The Journal of Experimental Education, 84(4), 666–685. 10.1080/00220973.2015.1099511
+
+Magis, D., & Barrada, J. R. (2017). \emph{Computerized adaptive testing with R: recent updates of the package catR}. Journal of Statistical Software, 76(Code Snippet 1). 10.18637/jss.v076.c01
+
+McClarty, K. L., Sperling, R. A., & Dodd, B. G. (2006). \emph{A variant of the progressive-restricted item exposure control procedure in computerized adaptive testing}. Annual Meeting of the American Educational Research Association, San Francisco
 }
 \author{
 Alexandre Jaloto

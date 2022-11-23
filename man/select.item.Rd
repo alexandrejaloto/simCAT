@@ -60,7 +60,7 @@ the same order of \code{content.names}}
 }
 \value{
 A list with two elements
-\itemize{s
+\itemize{
 \item \code{item} the number o the selected item in item bank
 \item \code{name} name of the selected item (row name)
 }
