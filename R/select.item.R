@@ -133,10 +133,6 @@ select.item <- function(bank, theta, administered = NULL,
 
       if(cat.type == 'variable')
       {
-        SE <- .8
-        threshold <- .3
-        n.administered <- 2
-        max.items <- 30
         # this package uses 'se <- 1/(sqrt(1 + info))'
         info.theta <- 1/SE^2 - 1
         info.threshold <- 1/threshold^2 - 1
