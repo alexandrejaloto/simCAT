@@ -18,9 +18,8 @@ cat.evaluation(results, true.scores, item.name, rmax)
 \value{
 a list with two elements.
 
-\code{evaluate} is a \code{data.frame}
-with the mean of the following variables (in reference
-to all replications):
+\code{evaluate} is a \code{data.frame}. Each line corresponds to a replication,
+and the columns are the following variables:
 \itemize{
 \item \code{rmse} root mean square error between true and estimated score
 \item \code{se} standard error of measurement

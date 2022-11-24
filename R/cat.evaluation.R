@@ -11,9 +11,8 @@
 #'
 #' @return a list with two elements.
 #'
-#' `evaluate` is a `data.frame`
-#' with the mean of the following variables (in reference
-#' to all replications):
+#' `evaluate` is a `data.frame`. Each line corresponds to a replication,
+#' and the columns are the following variables:
 #' \itemize{
 #' \item `rmse` root mean square error between true and estimated score
 #' \item `se` standard error of measurement
@@ -131,7 +130,7 @@ cat.evaluation <- function(results, true.scores, item.name, rmax)
 
   # final general evaluation
   eval$evaluation <- do.call(rbind, evaluation)
-  eval$evaluation <- colMeans(eval$evaluation)
+  # eval$evaluation <- colMeans(eval$evaluation)
 
   # final conditional evaluation
   rmse <- colMeans(rmse)
