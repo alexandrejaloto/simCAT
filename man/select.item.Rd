@@ -90,7 +90,7 @@ equations for fixed-lengh CAT. For variable-length, \code{simCAT} can use \code{
 where \verb{I(\\theta)} is the item information for the current theta, \verb{I_\{stop\}} is
 the information corresponding to the stopping error value, and \code{M} is the maximum
 length of the test. \code{simCAT} uses as default \code{"mcclarty"} (adapted from McClarty et al., 2006):
-\deqn{s = \frac{SE_{stop}}{SE}^k}
+\deqn{s = (\frac{SE_{stop}}{SE})^k}
 where \code{SE} is the standard error for the current theta, \verb{SE_\{stop\}} is
 the stopping error value.
 }

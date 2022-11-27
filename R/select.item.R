@@ -23,7 +23,8 @@
 #' @param content.props desirable proportion of each content in test, in
 #' the same order of `content.names`
 #' @param content.items vector indicating the content of each item
-#' @param met.content content balancing method: `MCCAT` (default) or `CCAT`
+#' @param met.content content balancing method: `MCCAT` (default), `CCAT`
+#' or `MMM`. See `content.balancing` for more information.
 #'
 #' @details
 #' In the progressive, the administered item is the one that has the highest weight. The weight of the
@@ -47,7 +48,7 @@
 #' where `I(\theta)` is the item information for the current theta, `I_{stop}` is
 #' the information corresponding to the stopping error value, and `M` is the maximum
 #' length of the test. `simCAT` uses as default `"mcclarty"` (adapted from McClarty et al., 2006):
-#' \deqn{s = \frac{SE_{stop}}{SE}^k}
+#' \deqn{s = (\frac{SE_{stop}}{SE})^k}
 #' where `SE` is the standard error for the current theta, `SE_{stop}` is
 #' the stopping error value.
 #' @references

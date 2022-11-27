@@ -22,7 +22,8 @@
 #' @param content.props desirable proportion of each content in test, in
 #' the same order of `content.names`
 #' @param content.items vector indicating the content of each item
-#' @param met.content content balancing method: `MCCAT` (default) or `CCAT`
+#' @param met.content content balancing method: `MCCAT` (default), `CCAT`
+#' #' or `MMM`. See `content.balancing` for more information.
 #' @param stop list with stopping rule and thresholds
 #' \itemize{
 #' \item `se` minimum standard error

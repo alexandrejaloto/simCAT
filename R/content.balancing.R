@@ -19,6 +19,11 @@
 #' If all subgroups has at least one applied item, the
 #' function randomly picks one from those with the proportions most
 #' distant from desirable.
+#' \item `MMM`: based on the desired proportions of content, the algorithm
+#' builds a sum-one cumulative distribution. Then, a random number with
+#' uniform distribution between zero and one is drawn. This number
+#' corresponds to an area in the cumulative distribution. It is from
+#' the content located in this area that the content will be selected.
 #' }
 #'
 #' @details
@@ -48,6 +53,9 @@ content.balancing <- function(bank, administered = NULL, content.names,
         content.items)
     ) %in% 1:2
   ) stop('You must inform content.names, content.props and content.items.')
+
+  if(!(met.content %in% c('CCAT', 'MCCAT', 'MMM')))
+    stop('met.content must be one of these: c("CCAT", "MCCAT", "MMM")')
 
   # how many contents?
   n.content <- length(content.names)
@@ -89,12 +97,12 @@ content.balancing <- function(bank, administered = NULL, content.names,
         length(group.0) == 1,
         group.0,
         sample(group.0, 1)
-        )
+      )
     } else {
       # pick one from the most distant subgroups
       group.dist <- (1:n.content)[(content.props - obs.prop) == max(content.props - obs.prop)]
       sel.group <- ifelse(length(group.dist) == 1, group.dist,
-                         sample(group.dist, 1))
+                          sample(group.dist, 1))
     }
     OUT <- unique(c(administered, (1:length(content.items))[content.items != content.names[sel.group]]))
   }
@@ -113,6 +121,20 @@ content.balancing <- function(bank, administered = NULL, content.names,
     OUT <- unique(c(administered, (1:length(content.items))[!(content.items %in% content.names[sel.group])]))
   }
 
+  # MMM ----
+  if (met.content == 'MMM')
+  {
+
+    cuts <- 0
+
+    for(i in 1:length(content.props))
+      cuts <- c(cuts, cuts[i] + content.props[i])
+
+    sel.group <- content.names[max(which (runif(1) > cuts))]
+
+    OUT <- unique(c(administered, (1:length(content.items))[!(content.items %in% content.names[sel.group])]))
+
+  }
   # end of função ----
 
   # if all items are available
