@@ -35,6 +35,11 @@ administered item, the function will randomly pick one.
 If all subgroups has at least one applied item, the
 function randomly picks one from those with the proportions most
 distant from desirable.
+\item \code{MMM}: based on the desired proportions of content, the algorithm
+builds a sum-one cumulative distribution. Then, a random number with
+uniform distribution between zero and one is drawn. This number
+corresponds to an area in the cumulative distribution. It is from
+the content located in this area that the content will be selected.
 }}
 }
 \value{

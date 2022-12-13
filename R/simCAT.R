@@ -95,14 +95,23 @@ simCAT <- function(resps, bank, start.theta = 0, sel.method = 'MFI',
 
   mod <- mirtCAT::generate.mirt_object(mod, '3PL')
 
-  if(cat.type == 'variable' & is.null(stop$max.items))
+  # if(cat.type == 'variable' & is.null(stop$max.items))
+  # {
+  #   warning('The maximum number of items was set to be nrow(bank)')
+  #   max.items <- nrow(bank)
+  # }
+
+  if(is.null(stop$max.items))
   {
-    warning('The maximum number of items was set to be nrow(bank)')
     max.items <- nrow(bank)
+    if(cat.type == 'variable')
+      warning('The maximum number of items was set to be nrow(bank)')
   }
 
   if(!is.null(stop$max.items))
     max.items <- stop$max.items
+
+  stop$max.items <- max.items
 
   results <- list()
 
@@ -130,7 +139,7 @@ simCAT <- function(resps, bank, start.theta = 0, sel.method = 'MFI',
 
     # person <- 1
 
-    ## verificar a exposição dos itens -----------------------------------------
+    ## verify item exposure -----------------------------------------
 
     # if it is the first person
     if (person == 1)

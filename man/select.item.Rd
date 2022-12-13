@@ -56,7 +56,8 @@ the same order of \code{content.names}}
 
 \item{content.items}{vector indicating the content of each item}
 
-\item{met.content}{content balancing method: \code{MCCAT} (default) or \code{CCAT}}
+\item{met.content}{content balancing method: \code{MCCAT} (default), \code{CCAT}
+or \code{MMM}. See \code{content.balancing} for more information.}
 }
 \value{
 A list with two elements
