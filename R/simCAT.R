@@ -101,17 +101,18 @@ simCAT <- function(resps, bank, start.theta = 0, sel.method = 'MFI',
   #   max.items <- nrow(bank)
   # }
 
+  if(!is.null(stop$max.items))
+    max.items <- stop$max.items
+
   if(is.null(stop$max.items))
   {
     max.items <- nrow(bank)
     if(cat.type == 'variable')
+    {
       warning('The maximum number of items was set to be nrow(bank)')
+      stop$max.items <- max.items
+    }
   }
-
-  if(!is.null(stop$max.items))
-    max.items <- stop$max.items
-
-  stop$max.items <- max.items
 
   results <- list()
 
