@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 simCAT
 ================
 
@@ -14,7 +13,3 @@ devtools::install_github('alexandrejaloto/simCAT')
 ```
 
 We will be happy to read your suggestions: <alexandrejaloto@gmail.com>.
-=======
-# simCAT
-Implements Computerized Adaptive Testing Simulations
->>>>>>> 1bf5d9e5ef95177547f3c1f582ead51d44d31d4d
