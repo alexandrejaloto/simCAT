@@ -15,7 +15,7 @@ gen.resp(theta, bank)
 A vector with the probability of seeing determined response in each item
 }
 \description{
-Generate response pattern based on probability of answering correct a dicotomic item, given a theta and an item bank
+Generate response pattern based on probability of answering correct a dichotomous item, given a theta and an item bank
 }
 \details{
 

@@ -17,7 +17,7 @@ calc.prob(theta, bank, u = 1)
 A vector with the probability of seein determined responsein each item
 }
 \description{
-Calculate probability of observing certain answer to a dicotomic item, given a theta
+Calculate probability of observing certain answer to a dichotomous item, given a theta
 }
 \details{
 

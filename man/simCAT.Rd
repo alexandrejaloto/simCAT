@@ -72,7 +72,7 @@ the same order of \code{content.names}}
 
 }
 \description{
-A CAT simulation with dicotomic items.
+A CAT simulation with dichotomous items.
 }
 \details{
 In the progressive, the administered item is the one that has the highest weight. The weight of the
