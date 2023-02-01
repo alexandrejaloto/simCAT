@@ -3,9 +3,9 @@ Title: Implements Computerized Adaptive Testing Simulations
 Version: 0.0.0.9000
 Author: Alexandre Jaloto [aut, cre] (<https://orcid.org/0000-0002-5291-1768>)
     Ricardo Primi [ths]
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+Description: Computerized Adaptive Testing simulations with dichotomic 
+items. Selects items with Fisher Maximum Information method an randomy, 
+with or without constrains (content balancing and item exposure control).
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
