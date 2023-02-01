@@ -2,8 +2,8 @@ simCAT
 ================
 
 simCAT implements Computerized Adaptive Testing simulations with
-dichotomic items. The program selects items with Fisher Maximum
-Information method an randomy, with or without constrains (content
+dichotomic items. The program selects items with Maximum Fisher
+Information method or randomly, with or without constraints (content
 balancing and item exposure control).
 
 To install simCAT, use:
