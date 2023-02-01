@@ -1,7 +1,7 @@
 #' @title Generate response pattern
 #' @name gen.resp
 #'
-#' @description Generate response pattern based on probability of answering correct a dicotomic item, given a theta and an item bank
+#' @description Generate response pattern based on probability of answering correct a dichotomous item, given a theta and an item bank
 #' @param bank matrix with item parameters (a, b, c)
 #' @param theta theta
 #'

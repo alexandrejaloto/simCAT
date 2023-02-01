@@ -1,7 +1,7 @@
 #' @title CAT simulation
 #' @name simCAT
 #'
-#' @description A CAT simulation with dicotomic items.
+#' @description A CAT simulation with dichotomous items.
 #'
 #' @param resps a matrix with responses (0 and 1).
 #' The number of columns

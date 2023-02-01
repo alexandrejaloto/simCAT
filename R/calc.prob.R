@@ -1,7 +1,7 @@
 #' @title Compute probability
 #' @name calc.prob
 #'
-#' @description Calculate probability of observing certain answer to a dicotomic item, given a theta
+#' @description Calculate probability of observing certain answer to a dichotomous item, given a theta
 #' @param bank matrix with item parameters (a, b, c)
 #' @param theta theta
 #' @param u `1` for rigth, `0` for wrong
