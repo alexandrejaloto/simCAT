@@ -6,6 +6,7 @@
 \usage{
 select.item(
   bank,
+  model = "3PL",
   theta,
   administered = NULL,
   sel.method = "MFI",
@@ -23,6 +24,8 @@ select.item(
 }
 \arguments{
 \item{bank}{matrix with item parameters (a, b, c)}
+
+\item{model}{may be \verb{3PL} or \code{graded}}
 
 \item{theta}{current theta}
 

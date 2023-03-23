@@ -7,6 +7,7 @@
 simCAT(
   resps,
   bank,
+  model = "3PL",
   start.theta = 0,
   sel.method = "MFI",
   cat.type = "variable",
@@ -27,6 +28,8 @@ The number of columns
 corresponds to the number of items}
 
 \item{bank}{matrix with item parameters (a, b, c)}
+
+\item{model}{may be \verb{3PL} or \code{graded}}
 
 \item{start.theta}{first theta}
 

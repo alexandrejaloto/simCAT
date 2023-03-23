@@ -7,6 +7,7 @@
 #' The number of columns
 #'  corresponds to the number of items
 #' @param bank matrix with item parameters (a, b, c)
+#' @param model may be `3PL` or `graded`
 #' @param start.theta first theta
 #' @param sel.method item selection method
 #' @param cat.type CAT with `variable` or `fixed` length
@@ -76,7 +77,7 @@
 #'
 #' @export
 
-simCAT <- function(resps, bank, start.theta = 0, sel.method = 'MFI',
+simCAT <- function(resps, bank, model = '3PL', start.theta = 0, sel.method = 'MFI',
                    cat.type = 'variable', acceleration = 1,
                    met.weight = 'mcclarty', threshold = .30, rmax = 1,
                    content.names = NULL, content.props = NULL,
@@ -85,15 +86,26 @@ simCAT <- function(resps, bank, start.theta = 0, sel.method = 'MFI',
 {
 
   # preparation ----
-
   bank <- data.frame(bank)
   rownames(bank) <- paste0('I', 1:nrow(bank))
 
-  mod <- bank
-  names(mod) <- c('a1', 'd', 'g')
-  mod$d <- -mod$a1*mod$d
+  if (model == '3PL')
+  {
+    mod <- bank
+    names(mod) <- c('a1', 'd', 'g')
+    mod$d <- -mod$a1*mod$d
 
-  mod <- mirtCAT::generate.mirt_object(mod, '3PL')
+    mod <- mirtCAT::generate.mirt_object(mod, '3PL')
+  }
+
+  if (model == 'graded')
+  {
+    mod <- bank
+    names(mod) <- c('a1', paste0('d', 1:(ncol(bank)-1)))
+    mod[,2:ncol(mod)] <- -mod$a1*mod[,2:ncol(mod)]
+
+    mod <- mirtCAT::generate.mirt_object(mod, 'graded')
+  }
 
   # if(cat.type == 'variable' & is.null(stop$max.items))
   # {
@@ -172,6 +184,7 @@ simCAT <- function(resps, bank, start.theta = 0, sel.method = 'MFI',
 
       item_select <- select.item(
         bank = bank_available,
+        model = model,
         theta = theta.cat,
         administered = administered,
         sel.method = sel.method,
@@ -231,7 +244,7 @@ simCAT <- function(resps, bank, start.theta = 0, sel.method = 'MFI',
       se.hist <- c(se.hist, SE)
 
       # compute information for theta.cat
-      info <- calc.info(bank = bank_available, theta = theta.cat)
+      info <- calc.info(bank = bank_available, theta = theta.cat, model = model)
       info[administered] <- 0
       info <- max(info)
 

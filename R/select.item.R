@@ -3,6 +3,7 @@
 #'
 #' @description Select next item to be administered
 #' @param bank matrix with item parameters (a, b, c)
+#' @param model may be `3PL` or `graded`
 #' @param theta current theta
 #' @param administered vector with administered items, `NULL` if it is the first
 #' item
@@ -69,7 +70,7 @@
 #'
 #' @export
 
-select.item <- function(bank, theta, administered = NULL,
+select.item <- function(bank, model = '3PL', theta, administered = NULL,
                         sel.method = 'MFI', cat.type = 'variable',
                         threshold = .30, SE,
                         acceleration = 1, met.weight = 'mcclarty',
@@ -104,7 +105,7 @@ select.item <- function(bank, theta, administered = NULL,
   # MFI ----
   if (sel.method == "MFI") {
 
-    info <- calc.info(bank, theta)
+    info <- calc.info(bank, theta, model)
 
     # select item
     select <- which(info == max(info[items_available]))

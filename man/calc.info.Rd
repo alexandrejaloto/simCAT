@@ -4,12 +4,14 @@
 \alias{calc.info}
 \title{Compute item information}
 \usage{
-calc.info(bank, theta)
+calc.info(bank, theta, model = "3PL")
 }
 \arguments{
 \item{bank}{matrix with item parameters (a, b, c)}
 
 \item{theta}{current theta}
+
+\item{model}{may be \verb{3PL} or \code{graded}}
 }
 \value{
 A vector with the information of each item
