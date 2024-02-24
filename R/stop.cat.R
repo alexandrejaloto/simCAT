@@ -21,7 +21,6 @@
 #' \item `applied` quantitative of applied items
 #' \item `delta.se` standard error reduction
 #' }
-#' @details
 #'
 #' @return A list with two elements:
 #' \itemize{

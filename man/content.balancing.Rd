@@ -50,9 +50,6 @@ are available, it returns \code{NULL}.
 \description{
 Constricts the selection with content balancing (CCAT or MCCAT)
 }
-\details{
-
-}
 \author{
 Alexandre Jaloto
 }

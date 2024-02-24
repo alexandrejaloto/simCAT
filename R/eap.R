@@ -28,7 +28,7 @@ eap <- function(pattern, bank)
   qdpts <- seq(-4, 4, length.out = 40)
 
   # priori
-  prior <- dnorm(qdpts, mean=0, sd=1, log = FALSE)/sum(dnorm(qdpts, mean=0, sd=1, log = FALSE))
+  prior <- stats::dnorm(qdpts, mean=0, sd=1, log = FALSE)/sum(stats::dnorm(qdpts, mean=0, sd=1, log = FALSE))
 
   bank <- data.frame(bank)
   names(bank) <- c('a', 'b', 'c')

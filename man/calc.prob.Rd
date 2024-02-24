@@ -11,16 +11,13 @@ calc.prob(theta, bank, u = 1)
 
 \item{bank}{matrix with item parameters (a, b, c)}
 
-\item{u}{\code{1} for rigth, \code{0} for wrong}
+\item{u}{\code{1} for correct, \code{0} for wrong}
 }
 \value{
-A vector with the probability of seein determined responsein each item
+A vector with the probability of seeing determined response in each item
 }
 \description{
 Calculate probability of observing certain answer to a dichotomous item, given a theta
-}
-\details{
-
 }
 \author{
 Alexandre Jaloto

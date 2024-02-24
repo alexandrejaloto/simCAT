@@ -19,7 +19,8 @@ simCAT(
   content.props = NULL,
   content.items = NULL,
   met.content = "MCCAT",
-  stop = list(se = 0.3, hypo = 0.015, hyper = Inf)
+  stop = list(se = 0.3, hypo = 0.015, hyper = Inf),
+  progress = TRUE
 )
 }
 \arguments{
@@ -33,7 +34,8 @@ corresponds to the number of items}
 
 \item{start.theta}{first theta}
 
-\item{sel.method}{item selection method}
+\item{sel.method}{item selection method: may be \code{MFI}, \code{progressive}
+or \code{random}}
 
 \item{cat.type}{CAT with \code{variable} or \code{fixed} length
 Necessary only for progressive method.}
@@ -42,7 +44,7 @@ Necessary only for progressive method.}
 Necessary only for progressive method.}
 
 \item{met.weight}{the procedure to calculate the \code{progressive}'s weight in variable-length
-CAT. It can be \code{"magis"} or \code{"mcclarty"} (default). See datails.}
+CAT. It can be \code{"magis"} or \code{"mcclarty"} (default). See details.}
 
 \item{threshold}{threshold for \code{cat.type}.
 Necessary only for progressive method.}
@@ -70,9 +72,18 @@ the same order of \code{content.names}}
 \item \code{min.items} maximum number of items
 \item \code{fixed} fixed number of items
 }}
+
+\item{progress}{shows progress bar}
 }
 \value{
-
+a list with five elements
+\itemize{
+\item \code{score} estimated theta
+\item \code{convergence} \code{TRUE} if the application ended before reaching the maximum test length
+\item \code{theta.history} estimated theta after each item administration
+\item \code{se.history} standard error after each item administration
+\item \code{prev.resps} previous responses (administered items)
+}
 }
 \description{
 A CAT simulation with dichotomous items.
@@ -93,7 +104,7 @@ if it is the first item of the test. For the other administering items,
 
 where \code{q} is the number of the item position in the test, \code{Q} is the
 test length and \code{k} is the acceleration parameter. \code{simCAT} uses these two
-equations for fixed-lengh CAT. For variable-length, \code{simCAT} can use \code{"magis"}
+equations for fixed-length CAT. For variable-length, \code{simCAT} can use \code{"magis"}
 (Magis & Barrada, 2017):
 \deqn{s = max [ \frac{I(\theta)}{I_{stop}},\frac{q}{M-1}]^k}
 where \verb{I(\\theta)} is the item information for the current theta, \verb{I_\{stop\}} is
@@ -102,6 +113,69 @@ length of the test. \code{simCAT} uses as default \code{"mcclarty"} (adapted fro
 \deqn{s = \frac{SE_{stop}}{SE}^k}
 where \code{SE} is the standard error for the current theta, \verb{SE_\{stop\}} is
 the stopping error value.
+}
+\examples{
+
+set.seed(1)
+n.items <- 50
+pars <- data.frame(
+ a = rlnorm(n.items),
+ b = rnorm(n.items),
+ c = rbeta(n.items, 5, 17),
+ d = 1,
+ # content
+ cont = sample(5, n.items, TRUE))
+
+# thetas
+theta <- rnorm(100)
+
+# simulate responses
+resps <- gen.resp(theta, pars[,1:3])
+
+results <- simCAT(resps = resps,
+ bank = pars[,1:3],
+ start.theta = 0,
+ sel.method = 'MFI',
+ cat.type = 'variable',
+ threshold = .3,
+ stop = list(se = .3, max.items = 10))
+
+eval <- cat.evaluation(
+ results = results,
+ true.scores = theta,
+ item.name = paste0('I', 1:nrow(pars)),
+ rmax = 1)
+
+#### 3 replications
+replications <- 3
+
+# simulate responses
+set.seed(1)
+resps <- list()
+for(i in 1:replications)
+ resps[[i]] <- gen.resp(theta, pars[,1:3])
+
+# CAT
+results <- list()
+for (rep in 1:replications)
+{
+ print(paste0('replication: ', rep, '/', replications))
+ results[[rep]] <- simCAT(
+  resps = resps[[rep]],
+  bank = pars[,1:3],
+  start.theta = 0,
+  sel.method = 'MFI',
+  cat.type = 'variable',
+  threshold = .3,
+  stop = list(se = .7, max.items = 10))
+}
+
+eval <- cat.evaluation(
+ results = results,
+ true.scores = theta,
+ item.name = paste0('I', 1:nrow(pars)),
+ rmax = 1)
+
 }
 \references{
 Barrada, J. R., Olea, J., Ponsoda, V., & Abad, F. J. (2008). \emph{Incorporating randomness in the Fisher information for improving item-exposure control in CATs}. British Journal of Mathematical and Statistical Psychology, 61(2), 493–513. 10.1348/000711007X230937

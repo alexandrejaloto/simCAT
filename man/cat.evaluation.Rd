@@ -7,7 +7,7 @@
 cat.evaluation(results, true.scores, item.name, rmax)
 }
 \arguments{
-\item{results}{list with restults of a CAT simulation from \code{simCAT}}
+\item{results}{list with results of a CAT simulation from \code{simCAT}}
 
 \item{true.scores}{true scores}
 
@@ -36,15 +36,79 @@ and the columns are the following variables:
 \item \code{min_length} minimum test length
 \item \code{max_length} maximum test length
 }
-\code{conditional} is a data.frame with the same variables
+\code{conditional} is a data.frame with the same variables (except
+for \code{length_sd} and \code{length_median})
 conditioned to the true scores. The \code{colnames} are the thetas
-in each decil, that is,
-\code{quantile(true.scores, probs = seq(.1, 1, length.out = 10))}.
+in each decile, that is,
+\code{quantile(true.scores, probs = seq(.1, 1, length.out = 10))}. Each
+line corresponds to the mean of the investigated variables for each
+decile. If there are replications, values are the replication means
+for each decile.
 }
 \description{
 Evaluate a CAT simulation
 }
-\details{
+\examples{
+
+set.seed(1)
+n.items <- 50
+pars <- data.frame(
+ a = rlnorm(n.items),
+ b = rnorm(n.items),
+ c = rbeta(n.items, 5, 17),
+ d = 1,
+ # content
+ cont = sample(5, n.items, TRUE))
+
+# thetas
+theta <- rnorm(100)
+
+# simulate responses
+resps <- gen.resp(theta, pars[,1:3])
+
+results <- simCAT(resps = resps,
+ bank = pars[,1:3],
+ start.theta = 0,
+ sel.method = 'MFI',
+ cat.type = 'variable',
+ threshold = .3,
+ stop = list(se = .3, max.items = 10))
+
+eval <- cat.evaluation(
+ results = results,
+ true.scores = theta,
+ item.name = paste0('I', 1:nrow(pars)),
+ rmax = 1)
+
+#### 3 replications
+replications <- 3
+
+# simulate responses
+set.seed(1)
+resps <- list()
+for(i in 1:replications)
+ resps[[i]] <- gen.resp(theta, pars[,1:3])
+
+# CAT
+results <- list()
+for (rep in 1:replications)
+{
+ print(paste0('replication: ', rep, '/', replications))
+ results[[rep]] <- simCAT(
+  resps = resps[[rep]],
+  bank = pars[,1:3],
+  start.theta = 0,
+  sel.method = 'MFI',
+  cat.type = 'variable',
+  threshold = .3,
+  stop = list(se = .7, max.items = 10))
+}
+
+eval <- cat.evaluation(
+ results = results,
+ true.scores = theta,
+ item.name = paste0('I', 1:nrow(pars)),
+ rmax = 1)
 
 }
 \author{

@@ -17,9 +17,6 @@ A vector with the probability of seeing determined response in each item
 \description{
 Generate response pattern based on probability of answering correct a dichotomous item, given a theta and an item bank
 }
-\details{
-
-}
 \author{
 Alexandre Jaloto
 }

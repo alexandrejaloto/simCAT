@@ -19,9 +19,6 @@ A vector with the information of each item
 \description{
 Calculate information of each item in the bank for a theta
 }
-\details{
-
-}
 \author{
 Alexandre Jaloto
 }

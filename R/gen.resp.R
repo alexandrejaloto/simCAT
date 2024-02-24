@@ -5,8 +5,6 @@
 #' @param bank matrix with item parameters (a, b, c)
 #' @param theta theta
 #'
-#' @details
-#'
 #' @return A vector with the probability of seeing determined response in each item
 #'
 #' @author Alexandre Jaloto
@@ -19,7 +17,7 @@ gen.resp <- function(theta, bank)
 
   p <- do.call(rbind, p)
 
-  random <- runif(nrow(p)*ncol(p))
+  random <- stats::runif(nrow(p)*ncol(p))
 
   resp <- apply(p > random, 2, as.numeric)
 

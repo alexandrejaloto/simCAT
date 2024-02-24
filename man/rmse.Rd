@@ -9,16 +9,13 @@ rmse(true, estimated)
 \arguments{
 \item{true}{true values}
 
-\item{estimate}{estimated values}
+\item{estimated}{estimated values}
 }
 \value{
 A numeric vector
 }
 \description{
 Calculate the root mean square error
-}
-\details{
-
 }
 \author{
 Alexandre Jaloto

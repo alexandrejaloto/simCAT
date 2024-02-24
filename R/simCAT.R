@@ -9,13 +9,14 @@
 #' @param bank matrix with item parameters (a, b, c)
 #' @param model may be `3PL` or `graded`
 #' @param start.theta first theta
-#' @param sel.method item selection method
+#' @param sel.method item selection method: may be `MFI`, `progressive`
+#'  or `random`
 #' @param cat.type CAT with `variable` or `fixed` length
 #' Necessary only for progressive method.
 #' @param acceleration acceleration parameter.
 #' Necessary only for progressive method.
 #' @param met.weight the procedure to calculate the `progressive`'s weight in variable-length
-#' CAT. It can be `"magis"` or `"mcclarty"` (default). See datails.
+#' CAT. It can be `"magis"` or `"mcclarty"` (default). See details.
 #' @param threshold threshold for `cat.type`.
 #' Necessary only for progressive method.
 #' @param rmax item maximum exposure rate
@@ -36,6 +37,7 @@
 #' \item `min.items` maximum number of items
 #' \item `fixed` fixed number of items
 #' }
+#' @param progress shows progress bar
 #'
 #' @details
 #' In the progressive, the administered item is the one that has the highest weight. The weight of the
@@ -53,7 +55,7 @@
 #'
 #' where `q` is the number of the item position in the test, `Q` is the
 #' test length and `k` is the acceleration parameter. `simCAT` uses these two
-#' equations for fixed-lengh CAT. For variable-length, `simCAT` can use `"magis"`
+#' equations for fixed-length CAT. For variable-length, `simCAT` can use `"magis"`
 #' (Magis & Barrada, 2017):
 #' \deqn{s = max [ \frac{I(\theta)}{I_{stop}},\frac{q}{M-1}]^k}
 #' where `I(\theta)` is the item information for the current theta, `I_{stop}` is
@@ -62,7 +64,18 @@
 #' \deqn{s = \frac{SE_{stop}}{SE}^k}
 #' where `SE` is the standard error for the current theta, `SE_{stop}` is
 #' the stopping error value.
+#'
+#' @return a list with five elements
+#' \itemize{
+#' \item `score` estimated theta
+#' \item `convergence` `TRUE` if the application ended before reaching the maximum test length
+#' \item `theta.history` estimated theta after each item administration
+#' \item `se.history` standard error after each item administration
+#' \item `prev.resps` previous responses (administered items)
+#' }
+#'
 #' @references
+#'
 #' Barrada, J. R., Olea, J., Ponsoda, V., & Abad, F. J. (2008). \emph{Incorporating randomness in the Fisher information for improving item-exposure control in CATs}. British Journal of Mathematical and Statistical Psychology, 61(2), 493–513. 10.1348/000711007X230937
 #'
 #' Leroux, A. J., & Dodd, B. G. (2016). \emph{A comparison of exposure control procedures in CATs using the GPC model}. The Journal of Experimental Education, 84(4), 666–685. 10.1080/00220973.2015.1099511
@@ -71,7 +84,67 @@
 #'
 #' McClarty, K. L., Sperling, R. A., & Dodd, B. G. (2006). \emph{A variant of the progressive-restricted item exposure control procedure in computerized adaptive testing}. Annual Meeting of the American Educational Research Association, San Francisco
 #'
-#' @return
+#' @examples
+#'
+#' set.seed(1)
+#' n.items <- 50
+#' pars <- data.frame(
+#'  a = rlnorm(n.items),
+#'  b = rnorm(n.items),
+#'  c = rbeta(n.items, 5, 17),
+#'  d = 1,
+#'  # content
+#'  cont = sample(5, n.items, TRUE))
+#'
+#' # thetas
+#' theta <- rnorm(100)
+#'
+#' # simulate responses
+#' resps <- gen.resp(theta, pars[,1:3])
+#'
+#' results <- simCAT(resps = resps,
+#'  bank = pars[,1:3],
+#'  start.theta = 0,
+#'  sel.method = 'MFI',
+#'  cat.type = 'variable',
+#'  threshold = .3,
+#'  stop = list(se = .3, max.items = 10))
+#'
+#' eval <- cat.evaluation(
+#'  results = results,
+#'  true.scores = theta,
+#'  item.name = paste0('I', 1:nrow(pars)),
+#'  rmax = 1)
+#'
+#' #### 3 replications
+#' replications <- 3
+#'
+#' # simulate responses
+#' set.seed(1)
+#' resps <- list()
+#' for(i in 1:replications)
+#'  resps[[i]] <- gen.resp(theta, pars[,1:3])
+#'
+#' # CAT
+#' results <- list()
+#' for (rep in 1:replications)
+#' {
+#'  print(paste0('replication: ', rep, '/', replications))
+#'  results[[rep]] <- simCAT(
+#'   resps = resps[[rep]],
+#'   bank = pars[,1:3],
+#'   start.theta = 0,
+#'   sel.method = 'MFI',
+#'   cat.type = 'variable',
+#'   threshold = .3,
+#'   stop = list(se = .7, max.items = 10))
+#' }
+#'
+#' eval <- cat.evaluation(
+#'  results = results,
+#'  true.scores = theta,
+#'  item.name = paste0('I', 1:nrow(pars)),
+#'  rmax = 1)
 #'
 #' @author Alexandre Jaloto
 #'
@@ -82,7 +155,7 @@ simCAT <- function(resps, bank, model = '3PL', start.theta = 0, sel.method = 'MF
                    met.weight = 'mcclarty', threshold = .30, rmax = 1,
                    content.names = NULL, content.props = NULL,
                    content.items = NULL, met.content = 'MCCAT',
-                   stop = list(se = .3, hypo = .015, hyper = Inf))
+                   stop = list(se = .3, hypo = .015, hyper = Inf), progress = TRUE)
 {
 
   # preparation ----
@@ -142,7 +215,8 @@ simCAT <- function(resps, bank, model = '3PL', start.theta = 0, sel.method = 'MF
   prev.resps <- list()
 
   # progress bar ----
-  bar <- txtProgressBar(min = 0, max = nrow(resps), char = "|", style = 3)
+  if(progress)
+    bar <- utils::txtProgressBar(min = 0, max = nrow(resps), char = "|", style = 3)
 
   # simulation ----
 
@@ -271,7 +345,8 @@ simCAT <- function(resps, bank, model = '3PL', start.theta = 0, sel.method = 'MF
     prev.resps[[person]] <- rownames(bank_available)[administered]
 
     # progress bar
-    setTxtProgressBar(bar, person)
+    if(progress)
+      utils::setTxtProgressBar(bar, person)
 
   }
 

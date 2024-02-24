@@ -21,9 +21,6 @@ exposure.rate(previous, item.name)
 \description{
 Calculate exposure rate of items in a bank
 }
-\details{
-
-}
 \author{
 Alexandre Jaloto
 }

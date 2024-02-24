@@ -44,9 +44,6 @@ achieved the maximum number of items. \code{TRUE} for any other case.
 \description{
 Check if any stopping rule has been achieved
 }
-\details{
-
-}
 \author{
 Alexandre Jaloto
 }

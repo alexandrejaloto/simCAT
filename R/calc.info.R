@@ -6,8 +6,6 @@
 #' @param theta current theta
 #' @param model may be `3PL` or `graded`
 #'
-#' @details
-#'
 #' @return A vector with the information of each item
 #'
 #' @author Alexandre Jaloto

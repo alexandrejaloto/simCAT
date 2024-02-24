@@ -26,8 +26,6 @@
 #' the content located in this area that the content will be selected.
 #' }
 #'
-#' @details
-#'
 #' @return A numeric vector with the items that will be excluded for
 #' selection. That is, it returns the unavailable items. If all items
 #' are available, it returns `NULL`.
@@ -130,7 +128,7 @@ content.balancing <- function(bank, administered = NULL, content.names,
     for(i in 1:length(content.props))
       cuts <- c(cuts, cuts[i] + content.props[i])
 
-    sel.group <- content.names[max(which (runif(1) > cuts))]
+    sel.group <- content.names[max(which (stats::runif(1) > cuts))]
 
     OUT <- unique(c(administered, (1:length(content.items))[!(content.items %in% content.names[sel.group])]))
 

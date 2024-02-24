@@ -17,7 +17,7 @@
 #' @param acceleration acceleration parameter.
 #' Necessary only for progressive method.
 #' @param met.weight the procedure to calculate the `progressive`'s weight in variable-length
-#' CAT. It can be `"magis"` or `"mcclarty"` (default). See datails.
+#' CAT. It can be `"magis"` or `"mcclarty"` (default). See details.
 #' @param max.items maximum number of items to be administered.
 #' Necessary only for progressive method, with `cat.type = "variable"`
 #' @param content.names vector with the contents of the test
@@ -43,7 +43,7 @@
 #'
 #' where `q` is the number of the item position in the test, `Q` is the
 #' test length and `k` is the acceleration parameter. `simCAT` uses these two
-#' equations for fixed-lengh CAT. For variable-length, `simCAT` can use `"magis"`
+#' equations for fixed-length CAT. For variable-length, `simCAT` can use `"magis"`
 #' (Magis & Barrada, 2017):
 #' \deqn{s = max [ \frac{I(\theta)}{I_{stop}},\frac{q}{M-1}]^k}
 #' where `I(\theta)` is the item information for the current theta, `I_{stop}` is
@@ -155,7 +155,7 @@ select.item <- function(bank, model = '3PL', theta, administered = NULL,
     info <- calc.info(bank, theta)
 
     # random values
-    r <- runif(nrow(bank), 0, max(info[items_available]))
+    r <- stats::runif(nrow(bank), 0, max(info[items_available]))
 
     # progressive
     select <- (1 - W)*r + W*info

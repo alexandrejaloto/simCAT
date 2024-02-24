@@ -4,3 +4,6 @@ rascunho
 .Rdata
 .httr-oauth
 .DS_Store
+pars.csv
+respostas.csv
+resultados_simulacao.rds

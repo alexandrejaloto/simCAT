@@ -3,9 +3,7 @@
 #'
 #' @description Calculate the root mean square error
 #' @param true true values
-#' @param estimate estimated values
-#'
-#' @details
+#' @param estimated estimated values
 #'
 #' @return A numeric vector
 #'

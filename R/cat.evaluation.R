@@ -2,12 +2,10 @@
 #' @name cat.evaluation
 #'
 #' @description Evaluate a CAT simulation
-#' @param results list with restults of a CAT simulation from `simCAT`
+#' @param results list with results of a CAT simulation from `simCAT`
 #' @param true.scores true scores
 #' @param item.name vector with the name of all items in the bank
 #' @param rmax item maximum exposure rate
-#'
-#' @details
 #'
 #' @return a list with two elements.
 #'
@@ -29,10 +27,76 @@
 #' \item `min_length` minimum test length
 #' \item `max_length` maximum test length
 #' }
-#' `conditional` is a data.frame with the same variables
+#' `conditional` is a data.frame with the same variables (except
+#' for `length_sd` and `length_median`)
 #' conditioned to the true scores. The `colnames` are the thetas
-#' in each decil, that is,
-#' `quantile(true.scores, probs = seq(.1, 1, length.out = 10))`.
+#' in each decile, that is,
+#' `quantile(true.scores, probs = seq(.1, 1, length.out = 10))`. Each
+#' line corresponds to the mean of the investigated variables for each
+#' decile. If there are replications, values are the replication means
+#' for each decile.
+#'
+#' @examples
+#'
+#' set.seed(1)
+#' n.items <- 50
+#' pars <- data.frame(
+#'  a = rlnorm(n.items),
+#'  b = rnorm(n.items),
+#'  c = rbeta(n.items, 5, 17),
+#'  d = 1,
+#'  # content
+#'  cont = sample(5, n.items, TRUE))
+#'
+#' # thetas
+#' theta <- rnorm(100)
+#'
+#' # simulate responses
+#' resps <- gen.resp(theta, pars[,1:3])
+#'
+#' results <- simCAT(resps = resps,
+#'  bank = pars[,1:3],
+#'  start.theta = 0,
+#'  sel.method = 'MFI',
+#'  cat.type = 'variable',
+#'  threshold = .3,
+#'  stop = list(se = .3, max.items = 10))
+#'
+#' eval <- cat.evaluation(
+#'  results = results,
+#'  true.scores = theta,
+#'  item.name = paste0('I', 1:nrow(pars)),
+#'  rmax = 1)
+#'
+#' #### 3 replications
+#' replications <- 3
+#'
+#' # simulate responses
+#' set.seed(1)
+#' resps <- list()
+#' for(i in 1:replications)
+#'  resps[[i]] <- gen.resp(theta, pars[,1:3])
+#'
+#' # CAT
+#' results <- list()
+#' for (rep in 1:replications)
+#' {
+#'  print(paste0('replication: ', rep, '/', replications))
+#'  results[[rep]] <- simCAT(
+#'   resps = resps[[rep]],
+#'   bank = pars[,1:3],
+#'   start.theta = 0,
+#'   sel.method = 'MFI',
+#'   cat.type = 'variable',
+#'   threshold = .3,
+#'   stop = list(se = .7, max.items = 10))
+#' }
+#'
+#' eval <- cat.evaluation(
+#'  results = results,
+#'  true.scores = theta,
+#'  item.name = paste0('I', 1:nrow(pars)),
+#'  rmax = 1)
 #'
 #' @author Alexandre Jaloto
 #'
@@ -41,8 +105,10 @@
 cat.evaluation <- function(results, true.scores, item.name, rmax)
 {
 
+
+
   # true scores deciles
-  thetas <- quantile(true.scores, probs = seq(.1,1,length.out = 10))
+  thetas <- stats::quantile(true.scores, probs = seq(.1,1,length.out = 10))
   levels <- cut(x = true.scores, breaks = c(-Inf,thetas), labels = 1:10)
 
   # object for average evaluation
@@ -63,6 +129,11 @@ cat.evaluation <- function(results, true.scores, item.name, rmax)
   length_median <- data.frame()
   min_length <- data.frame()
   max_length <- data.frame()
+
+  # if there is no replication
+  if(!is.null(names(results)))
+  # {replications <- length(results)} else {replications <- 1}
+  results <- list(results)
 
   for (i in 1:length(results))
   {
@@ -87,8 +158,8 @@ cat.evaluation <- function(results, true.scores, item.name, rmax)
       n_exp0 = sum(exposure$Freq == 0),
       n_exp_rmax = sum(exposure$Freq > rmax),
       length_mean = mean(teste.length),
-      length_sd = sd(teste.length),
-      length_median = median(teste.length),
+      length_sd = stats::sd(teste.length),
+      length_median = stats::median(teste.length),
       min_length = min(teste.length),
       max_length = max(teste.length)
     )
@@ -118,8 +189,8 @@ cat.evaluation <- function(results, true.scores, item.name, rmax)
       n_exp0[i,q] <- sum(conditional.exp[[q]]$Freq == 0)
       n_exp_rmax[i,q] <- sum(conditional.exp[[q]]$Freq > rmax)
       length_mean[i,q] <- mean(conditional.length[[q]])
-      length_sd[i,q] <- sd(conditional.length[[q]])
-      length_median[i,q] <- median(conditional.length[[q]])
+      length_sd[i,q] <- stats::sd(conditional.length[[q]])
+      length_median[i,q] <- stats::median(conditional.length[[q]])
       min_length[i,q] <- min(conditional.length[[q]])
       max_length[i,q] <- max(conditional.length[[q]])
     }
@@ -143,8 +214,6 @@ cat.evaluation <- function(results, true.scores, item.name, rmax)
   n_exp0 <- colMeans(n_exp0)
   n_exp_rmax <- colMeans(n_exp_rmax)
   length_mean <- colMeans(length_mean)
-  length_sd <- colMeans(length_sd)
-  length_median <- colMeans(length_median)
   min_length <- colMeans(min_length)
   max_length <- colMeans(max_length)
 
@@ -160,8 +229,6 @@ cat.evaluation <- function(results, true.scores, item.name, rmax)
       n_exp0,
       n_exp_rmax,
       length_mean,
-      length_sd,
-      length_median,
       min_length,
       max_length
     )

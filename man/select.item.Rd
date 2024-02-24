@@ -47,7 +47,7 @@ Necessary only for progressive method, with \code{cat.type = "variable"}}
 Necessary only for progressive method.}
 
 \item{met.weight}{the procedure to calculate the \code{progressive}'s weight in variable-length
-CAT. It can be \code{"magis"} or \code{"mcclarty"} (default). See datails.}
+CAT. It can be \code{"magis"} or \code{"mcclarty"} (default). See details.}
 
 \item{max.items}{maximum number of items to be administered.
 Necessary only for progressive method, with \code{cat.type = "variable"}}
@@ -88,7 +88,7 @@ if it is the first item of the test. For the other administering items,
 
 where \code{q} is the number of the item position in the test, \code{Q} is the
 test length and \code{k} is the acceleration parameter. \code{simCAT} uses these two
-equations for fixed-lengh CAT. For variable-length, \code{simCAT} can use \code{"magis"}
+equations for fixed-length CAT. For variable-length, \code{simCAT} can use \code{"magis"}
 (Magis & Barrada, 2017):
 \deqn{s = max [ \frac{I(\theta)}{I_{stop}},\frac{q}{M-1}]^k}
 where \verb{I(\\theta)} is the item information for the current theta, \verb{I_\{stop\}} is

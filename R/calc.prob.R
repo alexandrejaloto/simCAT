@@ -4,11 +4,9 @@
 #' @description Calculate probability of observing certain answer to a dichotomous item, given a theta
 #' @param bank matrix with item parameters (a, b, c)
 #' @param theta theta
-#' @param u `1` for rigth, `0` for wrong
+#' @param u `1` for correct, `0` for wrong
 #'
-#' @details
-#'
-#' @return A vector with the probability of seein determined responsein each item
+#' @return A vector with the probability of seeing determined response in each item
 #'
 #' @author Alexandre Jaloto
 #'

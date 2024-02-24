@@ -5,8 +5,6 @@
 #' @param previous list with previous responses. Each element corresponds to a person and has the names of the applied items.
 #' @param item.name vector with the name of all items in the bank
 #'
-#' @details
-#'
 #' @return `data.frame` with
 #' \itemize{
 #' \item `items` name of the items
