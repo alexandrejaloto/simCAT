@@ -12,4 +12,10 @@ To install simCAT, use:
 devtools::install_github('alexandrejaloto/simCAT')
 ```
 
+To simulate using a friendly interface, use:
+
+``` r
+simCAT::sim.shiny()
+```
+
 We will be happy to read your suggestions: <alexandrejaloto@gmail.com>.
