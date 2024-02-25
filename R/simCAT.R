@@ -40,30 +40,8 @@
 #' @param progress shows progress bar
 #'
 #' @details
-#' In the progressive, the administered item is the one that has the highest weight. The weight of the
-#' item `i` is calculated as following:
-#' \deqn{W_i = (1-s)R_i+sI_i}
-#' where `R` is a random number between zero and the maximum information of an item in the bank
-#' for the current theta, `I` is the item information and `s` is the importance of the component. As
-#' the application progresses, the random component loses importance. There are some ways to calculate `s`.
-#' For fixed-length CAT, Barrada et al. (2008) uses
-#' \deqn{s = 0}
 #'
-#' if it is the first item of the test. For the other administering items,
-#'
-#' \deqn{s = \frac{\sum_{f=1}^{q}{(f-1)^k}}{\sum_{f=1}^{Q}{(f-1)^k}}}
-#'
-#' where `q` is the number of the item position in the test, `Q` is the
-#' test length and `k` is the acceleration parameter. `simCAT` uses these two
-#' equations for fixed-length CAT. For variable-length, `simCAT` can use `"magis"`
-#' (Magis & Barrada, 2017):
-#' \deqn{s = max [ \frac{I(\theta)}{I_{stop}},\frac{q}{M-1}]^k}
-#' where `I(\theta)` is the item information for the current theta, `I_{stop}` is
-#' the information corresponding to the stopping error value, and `M` is the maximum
-#' length of the test. `simCAT` uses as default `"mcclarty"` (adapted from McClarty et al., 2006):
-#' \deqn{s = \frac{SE_{stop}}{SE}^k}
-#' where `SE` is the standard error for the current theta, `SE_{stop}` is
-#' the stopping error value.
+#' For details about formula of selection methods, see \code{\link[simCAT]{select.item}}.
 #'
 #' @return a list with five elements
 #' \itemize{
@@ -92,9 +70,7 @@
 #'  a = rlnorm(n.items),
 #'  b = rnorm(n.items),
 #'  c = rbeta(n.items, 5, 17),
-#'  d = 1,
-#'  # content
-#'  cont = sample(5, n.items, TRUE))
+#'  d = 1)
 #'
 #' # thetas
 #' theta <- rnorm(100)
@@ -137,7 +113,7 @@
 #'   sel.method = 'MFI',
 #'   cat.type = 'variable',
 #'   threshold = .3,
-#'   stop = list(se = .7, max.items = 10))
+#'   stop = list(se = .5, max.items = 10))
 #' }
 #'
 #' eval <- cat.evaluation(

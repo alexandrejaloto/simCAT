@@ -56,9 +56,7 @@ pars <- data.frame(
  a = rlnorm(n.items),
  b = rnorm(n.items),
  c = rbeta(n.items, 5, 17),
- d = 1,
- # content
- cont = sample(5, n.items, TRUE))
+ d = 1)
 
 # thetas
 theta <- rnorm(100)
@@ -101,7 +99,7 @@ for (rep in 1:replications)
   sel.method = 'MFI',
   cat.type = 'variable',
   threshold = .3,
-  stop = list(se = .7, max.items = 10))
+  stop = list(se = .5, max.items = 10))
 }
 
 eval <- cat.evaluation(

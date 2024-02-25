@@ -7,10 +7,6 @@
 #' Uses `simCAT` function in a more friendly way. For now, this application
 #' only supports simulation with dichotomous items and one replication.
 #'
-#' @examples
-#'
-#' sim.shiny()
-#'
 #' @author Alexandre Jaloto
 #'
 #' @export
@@ -160,8 +156,8 @@ sim.shiny <- function()
 
         if (!is.null(input$item_file$datapath) && !is.null(input$response_file$datapath)) {
 
-          params <- read.csv(input$item_file$datapath)
-          resp.bank <- read.csv(input$response_file$datapath)
+          params <- utils::read.csv(input$item_file$datapath)
+          resp.bank <- utils::read.csv(input$response_file$datapath)
 
           theta <- resp.bank[,ncol(resp.bank)]
           resps <- resp.bank[,-ncol(resp.bank)]
@@ -253,11 +249,11 @@ sim.shiny <- function()
 
   get_distribution <- function(dist, num_items, mean, sd) {
     if (dist == "Normal") {
-      return(rnorm(num_items, mean, sd))
+      return(stats::rnorm(num_items, mean, sd))
     } else if (dist == "Lognormal") {
-      return(rlnorm(num_items, mean, sd))
+      return(stats::rlnorm(num_items, mean, sd))
     } else if (dist == "Beta") {
-      return(rbeta(num_items, mean, sd))
+      return(stats::rbeta(num_items, mean, sd))
     } else {
       stop("Distribution not recognized.")
     }

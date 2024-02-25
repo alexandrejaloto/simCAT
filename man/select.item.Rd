@@ -32,7 +32,8 @@ select.item(
 \item{administered}{vector with administered items, \code{NULL} if it is the first
 item}
 
-\item{sel.method}{selection method}
+\item{sel.method}{item selection method: may be \code{MFI}, \code{progressive}
+or \code{random}}
 
 \item{cat.type}{CAT with \code{variable} or \code{fixed} length.
 Necessary only for progressive method.}
@@ -75,11 +76,17 @@ Select next item to be administered
 \details{
 In the progressive, the administered item is the one that has the highest weight. The weight of the
 item \code{i} is calculated as following:
+
 \deqn{W_i = (1-s)R_i+sI_i}
-where \code{R} is a random number between zero and the maximum information of an item in the bank
-for the current theta, \code{I} is the item information and \code{s} is the importance of the component. As
-the application progresses, the random component loses importance. There are some ways to calculate \code{s}.
+
+where \code{R} is a random number between zero and the maximum information of an
+item in the bank
+for the current theta, \code{I} is the item information and \code{s} is the importance
+of the component. As
+the application progresses, the random component loses importance. There are some
+ways to calculate \code{s}.
 For fixed-length CAT, Barrada et al. (2008) uses
+
 \deqn{s = 0}
 
 if it is the first item of the test. For the other administering items,
@@ -87,15 +94,20 @@ if it is the first item of the test. For the other administering items,
 \deqn{s = \frac{\sum_{f=1}^{q}{(f-1)^k}}{\sum_{f=1}^{Q}{(f-1)^k}}}
 
 where \code{q} is the number of the item position in the test, \code{Q} is the
-test length and \code{k} is the acceleration parameter. \code{simCAT} uses these two
-equations for fixed-length CAT. For variable-length, \code{simCAT} can use \code{"magis"}
-(Magis & Barrada, 2017):
+test length and \code{k} is the acceleration parameter. \code{simCAT} package uses these two
+equations for fixed-length CAT. For variable-length, \code{simCAT} package can
+use \code{"magis"} (Magis & Barrada, 2017):
+
 \deqn{s = max [ \frac{I(\theta)}{I_{stop}},\frac{q}{M-1}]^k}
-where \verb{I(\\theta)} is the item information for the current theta, \verb{I_\{stop\}} is
-the information corresponding to the stopping error value, and \code{M} is the maximum
-length of the test. \code{simCAT} uses as default \code{"mcclarty"} (adapted from McClarty et al., 2006):
+
+where \eqn{I(\theta)} is the item information for the current theta,
+\eqn{I_{stop}} is the information corresponding to the stopping error
+value, and \code{M} is the maximum length of the test. \code{simCAT} package uses as
+default \code{"mcclarty"} (adapted from McClarty et al., 2006):
+
 \deqn{s = (\frac{SE_{stop}}{SE})^k}
-where \code{SE} is the standard error for the current theta, \verb{SE_\{stop\}} is
+
+where \code{SE} is the standard error for the current theta, \eqn{SE_{stop}} is
 the stopping error value.
 }
 \references{

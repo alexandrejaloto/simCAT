@@ -13,11 +13,6 @@ CAT simulation in a Shiny application.
 Uses \code{simCAT} function in a more friendly way. For now, this application
 only supports simulation with dichotomous items and one replication.
 }
-\examples{
-
-sim.shiny()
-
-}
 \author{
 Alexandre Jaloto
 }

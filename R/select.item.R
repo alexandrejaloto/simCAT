@@ -2,12 +2,14 @@
 #' @name select.item
 #'
 #' @description Select next item to be administered
+#'
 #' @param bank matrix with item parameters (a, b, c)
 #' @param model may be `3PL` or `graded`
 #' @param theta current theta
 #' @param administered vector with administered items, `NULL` if it is the first
 #' item
-#' @param sel.method selection method
+#' @param sel.method item selection method: may be `MFI`, `progressive`
+#'  or `random`
 #' @param cat.type CAT with `variable` or `fixed` length.
 #' Necessary only for progressive method.
 #' @param threshold threshold for `cat.type`.
@@ -28,13 +30,20 @@
 #' or `MMM`. See `content.balancing` for more information.
 #'
 #' @details
+#'
 #' In the progressive, the administered item is the one that has the highest weight. The weight of the
 #' item `i` is calculated as following:
+#'
 #' \deqn{W_i = (1-s)R_i+sI_i}
-#' where `R` is a random number between zero and the maximum information of an item in the bank
-#' for the current theta, `I` is the item information and `s` is the importance of the component. As
-#' the application progresses, the random component loses importance. There are some ways to calculate `s`.
+#'
+#' where `R` is a random number between zero and the maximum information of an
+#' item in the bank
+#' for the current theta, `I` is the item information and `s` is the importance
+#' of the component. As
+#' the application progresses, the random component loses importance. There are some
+#' ways to calculate `s`.
 #' For fixed-length CAT, Barrada et al. (2008) uses
+#'
 #' \deqn{s = 0}
 #'
 #' if it is the first item of the test. For the other administering items,
@@ -42,16 +51,22 @@
 #' \deqn{s = \frac{\sum_{f=1}^{q}{(f-1)^k}}{\sum_{f=1}^{Q}{(f-1)^k}}}
 #'
 #' where `q` is the number of the item position in the test, `Q` is the
-#' test length and `k` is the acceleration parameter. `simCAT` uses these two
-#' equations for fixed-length CAT. For variable-length, `simCAT` can use `"magis"`
-#' (Magis & Barrada, 2017):
+#' test length and `k` is the acceleration parameter. `simCAT` package uses these two
+#' equations for fixed-length CAT. For variable-length, `simCAT` package can
+#' use `"magis"` (Magis & Barrada, 2017):
+#'
 #' \deqn{s = max [ \frac{I(\theta)}{I_{stop}},\frac{q}{M-1}]^k}
-#' where `I(\theta)` is the item information for the current theta, `I_{stop}` is
-#' the information corresponding to the stopping error value, and `M` is the maximum
-#' length of the test. `simCAT` uses as default `"mcclarty"` (adapted from McClarty et al., 2006):
+#'
+#' where \eqn{I(\theta)} is the item information for the current theta,
+#'  \eqn{I_{stop}} is the information corresponding to the stopping error
+#'  value, and `M` is the maximum length of the test. `simCAT` package uses as
+#'  default `"mcclarty"` (adapted from McClarty et al., 2006):
+#'
 #' \deqn{s = (\frac{SE_{stop}}{SE})^k}
-#' where `SE` is the standard error for the current theta, `SE_{stop}` is
+#'
+#' where `SE` is the standard error for the current theta, \eqn{SE_{stop}} is
 #' the stopping error value.
+#'
 #' @references
 #' Barrada, J. R., Olea, J., Ponsoda, V., & Abad, F. J. (2008). \emph{Incorporating randomness in the Fisher information for improving item-exposure control in CATs}. British Journal of Mathematical and Statistical Psychology, 61(2), 493–513. 10.1348/000711007X230937
 #'
