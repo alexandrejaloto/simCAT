@@ -9,3 +9,5 @@
 ^\.Rd2pdf7304
 ^\.git
 ^cran-comments\.md$
+^CRAN-RELEASE$
+^LICENSE\.md$
