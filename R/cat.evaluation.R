@@ -38,6 +38,7 @@
 #'
 #' @examples
 #'
+#' \dontrun{
 #' set.seed(1)
 #' n.items <- 50
 #' pars <- data.frame(
@@ -95,6 +96,7 @@
 #'  true.scores = theta,
 #'  item.name = paste0('I', 1:nrow(pars)),
 #'  rmax = 1)
+#' }
 #'
 #' @author Alexandre Jaloto
 #'
