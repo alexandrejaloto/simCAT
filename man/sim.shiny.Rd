@@ -6,6 +6,11 @@
 \usage{
 sim.shiny()
 }
+\value{
+This function does not return a value. Instead, it
+generates a Shiny application for interactive
+Computerized Adaptive Testing simulations.
+}
 \description{
 CAT simulation in a Shiny application.
 }

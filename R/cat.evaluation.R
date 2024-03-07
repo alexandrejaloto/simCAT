@@ -38,7 +38,7 @@
 #'
 #' @examples
 #'
-#' \dontrun{
+#' \donttest{
 #' set.seed(1)
 #' n.items <- 50
 #' pars <- data.frame(

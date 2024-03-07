@@ -7,6 +7,10 @@
 #' Uses `simCAT` function in a more friendly way. For now, this application
 #' only supports simulation with dichotomous items and one replication.
 #'
+#' @return This function does not return a value. Instead, it
+#' generates a Shiny application for interactive
+#' Computerized Adaptive Testing simulations.
+#'
 #' @author Alexandre Jaloto
 #'
 #' @export

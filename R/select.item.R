@@ -31,7 +31,7 @@
 #'
 #' @details
 #'
-#' In the progressive, the administered item is the one that has the highest weight. The weight of the
+#' In the progressive (Revuelta & Ponsoda, 1998), the administered item is the one that has the highest weight. The weight of the
 #' item `i` is calculated as following:
 #'
 #' \deqn{W_i = (1-s)R_i+sI_i}
@@ -75,6 +75,8 @@
 #' Magis, D., & Barrada, J. R. (2017). \emph{Computerized adaptive testing with R: recent updates of the package catR}. Journal of Statistical Software, 76(Code Snippet 1). 10.18637/jss.v076.c01
 #'
 #' McClarty, K. L., Sperling, R. A., & Dodd, B. G. (2006). \emph{A variant of the progressive-restricted item exposure control procedure in computerized adaptive testing}. Annual Meeting of the American Educational Research Association, San Francisco
+#'
+#' Revuelta, J., & Ponsoda, V. (1998). \emph{A comparison of item exposure control methods in computerized adaptive testing}. Journal of Educational Measurement, 35(4), 311–327. http://www.jstor.org/stable/1435308
 #'
 #' @return A list with two elements
 #' \itemize{
