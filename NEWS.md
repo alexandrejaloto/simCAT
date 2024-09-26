@@ -1,3 +1,7 @@
+# simCAT 1.0.1
+
+* Correction in DESCRIPTION file (author names)
+
 # simCAT 1.0.0
 
 * First version of package
